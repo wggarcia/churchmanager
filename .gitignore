@@ -1,0 +1,10 @@
+# Ignorar pastas locais e arquivos temporários
+.venv/
+__pycache__/
+*.pyc
+.DS_Store
+*.sqlite3
+Desktop/
+build/
+dist/
+*.log
