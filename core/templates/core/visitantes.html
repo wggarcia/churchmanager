@@ -1,0 +1,59 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Visitantes - {{ igreja_nome }}</title>
+  <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+  <style>
+    body {
+      background-color: #f8f9fa;
+      font-family: Arial, sans-serif;
+    }
+    header {
+      background-color: #198754;
+      color: white;
+      text-align: center;
+      padding: 20px;
+    }
+    .container {
+      margin-top: 30px;
+    }
+    footer {
+      background-color: #222;
+      color: #ccc;
+      text-align: center;
+      padding: 15px 0;
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h2>🙋 Visitantes</h2>
+    <p>{{ igreja_nome }}</p>
+  </header>
+
+  <main class="container">
+    {% if visitantes %}
+      <ul class="list-group">
+        {% for v in visitantes %}
+          <li class="list-group-item">
+            <strong>{{ v.nome }}</strong> — {{ v.data_visita }}
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="text-center text-muted mt-4">Nenhum visitante registrado.</p>
+    {% endif %}
+
+    <div class="text-center mt-4">
+      <a href="{% url 'index' %}" class="btn btn-success">⬅️ Voltar</a>
+    </div>
+  </main>
+
+  <footer>
+    <p>@WG Desenvolvedor Digital • Criação de Softwares</p>
+  </footer>
+</body>
+</html>

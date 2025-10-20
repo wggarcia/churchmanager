@@ -1,0 +1,9 @@
+{% extends 'core/base.html' %}
+{% block content %}
+<div class="card shadow-sm"><div class="card-header"><b>{{ title }}</b></div>
+<div class="card-body"><form method="post">{% csrf_token %}
+  {{ form.as_p }}
+  <button class="btn btn-primary">Salvar</button>
+  <a class="btn btn-link" href="javascript:history.back()">Cancelar</a>
+</form></div></div>
+{% endblock %}

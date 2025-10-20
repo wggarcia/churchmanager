@@ -1,0 +1,71 @@
+{% extends "admin/login.html" %}
+{% load static %}
+
+{% block extrastyle %}
+<style>
+  body {
+    background: linear-gradient(135deg, #0a2342, #2c5f2d);
+    color: white;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .login #header {
+    background: transparent;
+    text-align: center;
+    margin-bottom: 2em;
+  }
+
+  .login #header h1 {
+    font-size: 2em;
+    font-weight: bold;
+    color: #fff;
+  }
+
+  #content {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 2em;
+    max-width: 400px;
+    margin: 0 auto;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
+  }
+
+  .form-row label {
+    color: #fff;
+  }
+
+  .submit-row input {
+    background: #1e90ff;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-weight: bold;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+
+  .submit-row input:hover {
+    background: #0b63ce;
+  }
+
+  #branding {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  #branding img {
+    width: 90px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+  }
+</style>
+{% endblock %}
+
+{% block branding %}
+<div id="branding">
+  <img src="{% static 'img/logo.png' %}" alt="Logo ADSJS">
+  <h1>ADSJS - Assembleia de Deus</h1>
+  <p>Ministério Pastora Angélica Coutinho dos Santos</p>
+</div>
+{% endblock %}

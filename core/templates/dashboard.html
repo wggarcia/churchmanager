@@ -1,0 +1,105 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ igreja_nome }} - Sistema ADSJS</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            background-color: #f5f7fa;
+            font-family: 'Arial', sans-serif;
+        }
+        header {
+            background-color: #198754;
+            color: white;
+            text-align: center;
+            padding: 15px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        header img {
+            height: 60px;
+            border-radius: 8px;
+        }
+        footer {
+            background-color: #222;
+            color: #ccc;
+            padding: 10px;
+            text-align: center;
+            font-size: 14px;
+        }
+        .card {
+            border-radius: 10px;
+            text-align: center;
+            color: white;
+            padding: 15px;
+        }
+        .card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+        }
+        .card p {
+            font-size: 1.4rem;
+            font-weight: bold;
+        }
+        .dizimo { background-color: #198754; }
+        .oferta { background-color: #0d6efd; }
+        .outros { background-color: #6610f2; }
+        .despesa { background-color: #dc3545; }
+        .saldo { background-color: #20c997; }
+    </style>
+</head>
+<body>
+
+<header>
+    <img src="{{ igreja_logo }}" alt="Logo da Igreja">
+    <h2>{{ igreja_nome }}</h2>
+    <p>{{ pastor_nome }}</p>
+    <a href="/admin/" style="color:white; font-weight:bold;">⚙️ Painel Administrativo</a>
+</header>
+
+<div class="container mt-4">
+    <div class="row g-3 text-center">
+        <div class="col-md-2 col-6"><div class="card dizimo"><h3>Dízimos</h3><p>R$ {{ dizimos|floatformat:2 }}</p></div></div>
+        <div class="col-md-2 col-6"><div class="card oferta"><h3>Ofertas</h3><p>R$ {{ ofertas|floatformat:2 }}</p></div></div>
+        <div class="col-md-2 col-6"><div class="card outros"><h3>Outros</h3><p>R$ {{ outros|floatformat:2 }}</p></div></div>
+        <div class="col-md-2 col-6"><div class="card despesa"><h3>Despesas</h3><p>R$ {{ despesas|floatformat:2 }}</p></div></div>
+        <div class="col-md-4 col-12"><div class="card saldo"><h3>Saldo Atual</h3><p>R$ {{ saldo_atual|floatformat:2 }}</p></div></div>
+    </div>
+
+    <div class="mt-5">
+        <canvas id="financeChart"></canvas>
+    </div>
+</div>
+
+<footer>
+    <p>© {{ igreja_nome }} — Todos os direitos reservados</p>
+    <p>@WG Desenvolvedor Digital • Criação de Softwares</p>
+</footer>
+
+<script>
+const ctx = document.getElementById('financeChart').getContext('2d');
+const financeChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: ['Dízimos', 'Ofertas', 'Outros', 'Despesas', 'Saldo'],
+        datasets: [{
+            label: 'Movimentação Financeira',
+            data: [{{ dizimos }}, {{ ofertas }}, {{ outros }}, {{ despesas }}, {{ saldo_atual }}],
+            backgroundColor: [
+                '#198754', '#0d6efd', '#6610f2', '#dc3545', '#20c997'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+        scales: { y: { beginAtZero: true } }
+    }
+});
+</script>
+
+</body>
+</html>

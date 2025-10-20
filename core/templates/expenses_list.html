@@ -1,0 +1,36 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Despesas da Igreja{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">Despesas da Igreja</h2>
+
+<div class="alert alert-danger">
+    <strong>Total de despesas:</strong> R$ {{ total|floatformat:2 }}
+</div>
+
+<table class="table table-striped">
+    <thead class="table-danger">
+        <tr>
+            <th>Data</th>
+            <th>Descrição</th>
+            <th>Categoria</th>
+            <th>Valor (R$)</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for e in items %}
+        <tr>
+            <td>{{ e.date|date:"d/m/Y" }}</td>
+            <td>{{ e.description }}</td>
+            <td>{{ e.category }}</td>
+            <td>{{ e.amount|floatformat:2 }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="4" class="text-center text-muted">Nenhuma despesa registrada.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

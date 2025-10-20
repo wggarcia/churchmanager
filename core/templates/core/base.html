@@ -1,0 +1,52 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <title>{{ igreja_nome }} - Sistema ADSJS</title>
+  <link rel="icon" href="{{ igreja_logo }}">
+  <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body { background-color:#f5f7fa; }
+    header { background:#198754; color:#fff; text-align:center; padding:18px 8px; }
+    header img { height:64px; border-radius:10px; margin-bottom:6px; }
+    nav a { margin:0 8px; font-weight:600; }
+    footer { background:#111; color:#bbb; text-align:center; padding:14px; margin-top:40px; }
+  </style>
+</head>
+<body>
+
+<header>
+  <img src="{{ igreja_logo }}" alt="Logo">
+  <h2 class="m-0">{{ igreja_nome }}</h2>
+  <small>{{ pastor_nome }}</small>
+</header>
+
+<nav class="navbar navbar-expand-lg navbar-dark" style="background:#0f5132;">
+  <div class="container">
+    <div class="navbar-nav mx-auto">
+      <a class="nav-link" href="{% url 'index' %}">🏠 Início</a>
+      <a class="nav-link" href="{% url 'membros' %}">👥 Membros</a>
+      <a class="nav-link" href="{% url 'eventos' %}">📅 Eventos</a>
+      <a class="nav-link" href="{% url 'visitantes' %}">🙋 Visitantes</a>
+      <a class="nav-link" href="{% url 'reunioes' %}">🕊️ Reuniões</a>
+      <a class="nav-link" href="{% url 'missoes' %}">🌍 Missões</a>
+      {% if request.user.is_superuser %}
+      <a class="nav-link" href="{% url 'financeiro' %}">💰 Financeiro</a>
+      {% endif %}
+      <a class="nav-link" href="/admin/">⚙️ Admin</a>
+    </div>
+  </div>
+</nav>
+
+<main class="container py-4">
+  {% block content %}{% endblock %}
+</main>
+
+<footer>
+  <div>@WG Desenvolvedor Digital • Criação de Softwares</div>
+</footer>
+</body>
+</html>
