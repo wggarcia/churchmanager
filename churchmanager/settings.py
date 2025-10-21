@@ -5,7 +5,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = "troque-esta-chave-em-producao"
 DEBUG = True
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['adsjs.com.br', 'www.adsjs.com.br', 'churchmanager-mvo6.onrender.com']
 
 INSTALLED_APPS = [
     "django.contrib.admin",
