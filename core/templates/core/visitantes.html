@@ -1,59 +1,31 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-  <meta charset="UTF-8">
-  <title>Visitantes - {{ igreja_nome }}</title>
-  <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-  <style>
-    body {
-      background-color: #f8f9fa;
-      font-family: Arial, sans-serif;
-    }
-    header {
-      background-color: #198754;
-      color: white;
-      text-align: center;
-      padding: 20px;
-    }
-    .container {
-      margin-top: 30px;
-    }
-    footer {
-      background-color: #222;
-      color: #ccc;
-      text-align: center;
-      padding: 15px 0;
-      margin-top: 40px;
-    }
-  </style>
-</head>
-<body>
-  <header>
-    <h2>🙋 Visitantes</h2>
-    <p>{{ igreja_nome }}</p>
-  </header>
+{% extends "core/base.html" %}
+{% block content %}
+<h3>🙋 Visitantes</h3>
 
-  <main class="container">
-    {% if visitantes %}
-      <ul class="list-group">
-        {% for v in visitantes %}
-          <li class="list-group-item">
-            <strong>{{ v.nome }}</strong> — {{ v.data_visita }}
-          </li>
-        {% endfor %}
-      </ul>
-    {% else %}
-      <p class="text-center text-muted mt-4">Nenhum visitante registrado.</p>
-    {% endif %}
-
-    <div class="text-center mt-4">
-      <a href="{% url 'index' %}" class="btn btn-success">⬅️ Voltar</a>
-    </div>
-  </main>
-
-  <footer>
-    <p>@WG Desenvolvedor Digital • Criação de Softwares</p>
-  </footer>
-</body>
-</html>
+<table class="table table-striped table-bordered table-hover align-middle">
+  <thead class="table-primary text-center">
+    <tr>
+      <th>Nome</th>
+      <th>Data da Visita</th>
+      <th>Frequenta Igreja?</th>
+      <th>Igreja de Origem</th>
+      <th>Telefone</th>
+      <th>Email</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for v in visitantes %}
+    <tr>
+      <td>{{ v.nome }}</td>
+      <td>{{ v.data_visita|date:"d/m/Y" }}</td>
+      <td class="text-center">{{ v.frequenta_igreja|yesno:"Sim,Não" }}</td>
+      <td>{{ v.igreja_origem }}</td>
+      <td>{{ v.telefone }}</td>
+      <td>{{ v.email }}</td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="6" class="text-center text-muted">Nenhum visitante registrado.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends "core/base.html" %}
+{% block content %}
+<h3 class="mb-3">📊 Painel</h3>
+<div class="row g-3">
+  <div class="col-6 col-md-3"><div class="card text-center p-3">Membros<br><b>{{ membros_total }}</b></div></div>
+  <div class="col-6 col-md-3"><div class="card text-center p-3">Visitantes<br><b>{{ visitantes_total }}</b></div></div>
+  <div class="col-6 col-md-3"><div class="card text-center p-3">Ministérios<br><b>{{ ministerios_total }}</b></div></div>
+  <div class="col-6 col-md-3"><div class="card text-center p-3">Reuniões<br><b>{{ reunioes_total }}</b></div></div>
+</div>
+<p class="mt-4">Use o menu acima para navegar.</p>
+{% endblock %}

@@ -1,19 +1,119 @@
 {% extends "core/base.html" %}
 {% block content %}
-  <div class="text-center mb-4">
-    <div class="alert alert-success shadow">
-      {{ mensagem_boas_vindas }}
-    </div>
-  </div>
 
-  <div class="text-center">
-    <a href="{% url 'membros' %}" class="btn btn-outline-success m-2">👥 Membros</a>
-    <a href="{% url 'eventos' %}" class="btn btn-outline-success m-2">📅 Eventos</a>
-    <a href="{% url 'visitantes' %}" class="btn btn-outline-success m-2">🙋 Visitantes</a>
-    <a href="{% url 'reunioes' %}" class="btn btn-outline-success m-2">🕊️ Reuniões</a>
-    <a href="{% url 'missoes' %}" class="btn btn-outline-success m-2">🌍 Missões</a>
-    {% if request.user.is_superuser %}
-      <a href="{% url 'financeiro' %}" class="btn btn-success m-2">💰 Financeiro</a>
+<div class="container mt-3">
+
+  <!-- 🖼️ Banner rotativo -->
+  {% if banners %}
+  <div id="bannerCarousel" class="carousel slide mb-4 shadow" data-bs-ride="carousel">
+    <div class="carousel-inner">
+      {% for banner in banners %}
+        <div class="carousel-item {% if forloop.first %}active{% endif %}">
+          <img src="{{ banner.imagem.url }}" class="d-block w-100 rounded" style="max-height:400px;object-fit:cover;" alt="Banner {{ forloop.counter }}">
+          {% if banner.titulo or banner.descricao %}
+            <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded p-2">
+              {% if banner.titulo %}<h5>{{ banner.titulo }}</h5>{% endif %}
+              {% if banner.descricao %}<p>{{ banner.descricao }}</p>{% endif %}
+            </div>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#bannerCarousel" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon"></span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#bannerCarousel" data-bs-slide="next">
+      <span class="carousel-control-next-icon"></span>
+    </button>
+  </div>
+  {% endif %}
+
+  <!-- 🙏 Boas-vindas -->
+  <div class="text-center mb-4">
+    <h3 class="fw-bold text-success">{{ igreja_nome }}</h3>
+    <p class="text-muted mb-0">{{ pastor_nome }}</p>
+    {% if mensagem_boas_vindas %}
+      <p class="mt-2">{{ mensagem_boas_vindas }}</p>
     {% endif %}
   </div>
+
+  <!-- 🔗 Botões principais -->
+  <div class="d-flex justify-content-center flex-wrap gap-3 mb-4">
+    <a href="{% url 'eventos' %}" class="btn btn-success shadow">📅 Eventos</a>
+    <a href="{% url 'visitantes' %}" class="btn btn-outline-success shadow-sm">🙋 Visitantes</a>
+    {% if request.user.is_authenticated %}
+      <a href="{% url 'membros' %}" class="btn btn-outline-success shadow-sm">👥 Membros</a>
+      <a href="{% url 'reunioes' %}" class="btn btn-outline-success shadow-sm">🕊️ Reuniões</a>
+      <a href="{% url 'missoes' %}" class="btn btn-outline-success shadow-sm">🌍 Missões</a>
+      {% if request.user.is_superuser %}
+        <a href="{% url 'financeiro' %}" class="btn btn-success shadow">💰 Financeiro</a>
+      {% endif %}
+    {% endif %}
+  </div>
+
+  <!-- 📊 Gráfico Financeiro -->
+  {% if request.user.is_authenticated %}
+  <div class="card mb-4 shadow">
+    <div class="card-body">
+      <h5 class="card-title text-center text-success mb-3">
+        Resumo Financeiro (últimos 12 meses)
+      </h5>
+      <canvas id="graficoFinanceiro"></canvas>
+    </div>
+  </div>
+  {% endif %}
+
+</div>
+
+<!-- =============================== -->
+<!-- 📊 Script do gráfico em blocos -->
+<!-- =============================== -->
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const ctx = document.getElementById("graficoFinanceiro");
+  if (ctx) {
+    new Chart(ctx, {
+      type: "bar",  // 👈 Gráfico de blocos
+      data: {
+        labels: {{ meses|safe }},
+        datasets: [
+          {
+            label: "Contribuições",
+            data: {{ contribuicoes|safe }},
+            backgroundColor: "rgba(25,135,84,0.85)", // verde
+            borderRadius: 6
+          },
+          {
+            label: "Despesas",
+            data: {{ despesas|safe }},
+            backgroundColor: "rgba(220,53,69,0.85)", // vermelho
+            borderRadius: 6
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: "bottom",
+            labels: { color: "#333", font: { size: 13 } }
+          }
+        },
+        scales: {
+          x: {
+            ticks: { color: "#444" },
+            grid: { display: false }
+          },
+          y: {
+            beginAtZero: true,
+            ticks: { color: "#444" },
+            grid: { color: "#e6e6e6" }
+          }
+        }
+      }
+    });
+  }
+});
+</script>
+
 {% endblock %}

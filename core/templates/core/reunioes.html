@@ -1,62 +1,31 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-  <meta charset="UTF-8">
-  <title>Reuniões Ministeriais - {{ igreja_nome }}</title>
-  <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-  <style>
-    body {
-      background-color: #f8f9fa;
-      font-family: Arial, sans-serif;
-    }
-    header {
-      background-color: #198754;
-      color: white;
-      text-align: center;
-      padding: 20px;
-    }
-    .container {
-      margin-top: 30px;
-    }
-    footer {
-      background-color: #222;
-      color: #ccc;
-      text-align: center;
-      padding: 15px 0;
-      margin-top: 40px;
-    }
-  </style>
-</head>
-<body>
-  <header>
-    <h2>🕊️ Reuniões Ministeriais</h2>
-    <p>{{ igreja_nome }}</p>
-  </header>
+{% extends "core/base.html" %}
+{% block content %}
+<h3>🕊️ Escala de Serviço</h3>
 
-  <main class="container">
-    {% if reunioes %}
-      <ul class="list-group">
-        {% for r in reunioes %}
-          <li class="list-group-item">
-            <strong>{{ r.titulo }}</strong> — {{ r.data }}
-            {% if r.descricao %}
-              <br><small>{{ r.descricao }}</small>
-            {% endif %}
-          </li>
+<table class="table table-striped table-bordered table-hover align-middle">
+  <thead class="table-secondary text-center">
+    <tr>
+      <th>Data</th>
+      <th>Culto</th>
+      <th>Obreiros Escalados</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for e in escalas %}
+    <tr>
+      <td class="text-center">{{ e.data|date:"d/m/Y" }}</td>
+      <td>{{ e.culto }}</td>
+      <td>
+        {% for o in e.obreiros.all %}
+          <span class="badge text-bg-success">{{ o.nome }}</span>
+        {% empty %}
+          <span class="text-muted">Nenhum obreiro escalado</span>
         {% endfor %}
-      </ul>
-    {% else %}
-      <p class="text-center text-muted mt-4">Nenhuma reunião cadastrada.</p>
-    {% endif %}
-
-    <div class="text-center mt-4">
-      <a href="{% url 'index' %}" class="btn btn-success">⬅️ Voltar</a>
-    </div>
-  </main>
-
-  <footer>
-    <p>@WG Desenvolvedor Digital • Criação de Softwares</p>
-  </footer>
-</body>
-</html>
+      </td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="3" class="text-center text-muted">Nenhuma escala cadastrada.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

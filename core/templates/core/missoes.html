@@ -1,57 +1,21 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-  <meta charset="UTF-8">
-  <title>Missões - {{ igreja_nome }}</title>
-  <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-  <style>
-    body {
-      background-color: #f8f9fa;
-      font-family: Arial, sans-serif;
-    }
-    header {
-      background-color: #198754;
-      color: white;
-      text-align: center;
-      padding: 20px;
-    }
-    .container {
-      margin-top: 30px;
-    }
-    footer {
-      background-color: #222;
-      color: #ccc;
-      text-align: center;
-      padding: 15px 0;
-      margin-top: 40px;
-    }
-  </style>
-</head>
-<body>
-  <header>
-    <h2>🌍 Missões da {{ igreja_nome }}</h2>
-    <p>{{ pastor_nome }}</p>
-  </header>
+{% extends "core/base.html" %}
+{% block content %}
+<h3>🌍 Missões</h3>
 
-  <main class="container">
-    {% if missoes %}
-      <ul class="list-group">
-        {% for m in missoes %}
-          <li class="list-group-item">{{ m.nome }}</li>
-        {% endfor %}
-      </ul>
-    {% else %}
-      <p class="text-center text-muted mt-4">Nenhuma missão cadastrada.</p>
-    {% endif %}
-
-    <div class="text-center mt-4">
-      <a href="{% url 'index' %}" class="btn btn-success">⬅️ Voltar</a>
-    </div>
-  </main>
-
-  <footer>
-    <p>@WG Desenvolvedor Digital • Criação de Softwares</p>
-  </footer>
-</body>
-</html>
+<table class="table table-striped table-bordered table-hover align-middle">
+  <thead class="table-light text-center">
+    <tr>
+      <th>Nome da Missão</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for m in missoes %}
+    <tr>
+      <td>{{ m.nome }}</td>
+    </tr>
+    {% empty %}
+    <tr><td class="text-center text-muted">Nenhuma missão cadastrada.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

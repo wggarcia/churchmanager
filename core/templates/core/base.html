@@ -2,111 +2,179 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ igreja_nome }} - Sistema ADSJS</title>
-    <link rel="icon" href="{{ igreja_logo }}">
-    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ igreja_nome }} - Sistema ADSJS</title>
+  <link rel="icon" href="{{ igreja_logo }}">
+  <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+  <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <!-- 🟢 PWA Support -->
-    <link rel="manifest" href="{% static 'manifest.json' %}">
-    <script>
-      if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register("{% static 'sw.js' %}");
-      }
-    </script>
+  <!-- 🟢 PWA Support -->
+  <link rel="manifest" href="{% static 'manifest.json' %}">
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker
+        .register("{% static 'sw.js' %}")
+        .then(() => console.log("Service Worker registrado com sucesso"))
+        .catch((err) => console.log("Erro ao registrar Service Worker:", err));
+    }
+  </script>
 
-    <style>
-        body {
-            background-color: #f5f7fa;
-            font-family: 'Arial', sans-serif;
-        }
+  <style>
+    body {
+      background-color: #f5f7fa;
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
 
-        header {
-            background-color: #198754;
-            color: white;
-            text-align: center;
-            padding: 15px 0;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
+    header {
+      background-color: #198754;
+      color: white;
+      text-align: center;
+      padding: 15px 0;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
 
-        header img {
-            height: 60px;
-            border-radius: 8px;
-            margin-bottom: 8px;
-        }
+    header img {
+      height: 60px;
+      border-radius: 8px;
+      margin-bottom: 8px;
+    }
 
-        /* Navbar */
-        .navbar {
-            background-color: #0f5132;
-        }
+    /* Navbar alinhada à esquerda */
+    .navbar {
+      background-color: #0f5132;
+    }
 
-        .navbar-brand, .navbar-nav .nav-link {
-            color: #fff !important;
-            font-weight: 600;
-        }
+    .navbar-brand, .navbar-nav .nav-link {
+      color: #fff !important;
+      font-weight: 600;
+    }
 
-        .navbar-nav .nav-link:hover {
-            background-color: #198754;
-            border-radius: 6px;
-        }
+    .navbar-nav {
+      margin-left: 0 !important;
+    }
 
-        footer {
-            background-color: #222;
-            color: #ccc;
-            padding: 15px 0;
-            text-align: center;
-            font-size: 14px;
-            margin-top: 40px;
-        }
+    .navbar-nav .nav-link:hover {
+      background-color: #198754;
+      border-radius: 6px;
+    }
 
-        footer strong {
-            color: #fff;
-        }
-    </style>
+    footer {
+      background-color: #222;
+      color: #ccc;
+      padding: 15px 0;
+      text-align: center;
+      font-size: 14px;
+      margin-top: 40px;
+    }
+
+    footer strong {
+      color: #fff;
+    }
+
+    /* Botão flutuante para admin */
+    .admin-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #198754;
+      color: white;
+      padding: 12px 16px;
+      border-radius: 8px;
+      font-weight: bold;
+      text-decoration: none;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+      z-index: 1000;
+    }
+
+    .admin-btn:hover {
+      background-color: #145c36;
+      text-decoration: none;
+      color: white;
+    }
+  </style>
 </head>
-<body>
 
-<header>
+<body>
+  <header>
     <img src="{{ igreja_logo }}" alt="Logo da Igreja">
     <h2>{{ igreja_nome }}</h2>
     <p>{{ pastor_nome }}</p>
-</header>
+  </header>
 
-<nav class="navbar navbar-expand-lg">
-  <div class="container">
-    <a class="navbar-brand" href="/">ADSJS</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon" style="filter: invert(1);"></span>
-    </button>
-    <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
-      <ul class="navbar-nav text-center">
-        <li class="nav-item"><a class="nav-link" href="/">🏠 Início</a></li>
-        <li class="nav-item"><a class="nav-link" href="/membros/">👥 Membros</a></li>
-        <li class="nav-item"><a class="nav-link" href="/eventos/">📅 Eventos</a></li>
-        <li class="nav-item"><a class="nav-link" href="/visitantes/">🙋 Visitantes</a></li>
-        <li class="nav-item"><a class="nav-link" href="/reunioes/">🕊️ Reuniões</a></li>
-        <li class="nav-item"><a class="nav-link" href="/missoes/">🌍 Missões</a></li>
-        {% if request.user.is_superuser %}
-        <li class="nav-item"><a class="nav-link" href="/financeiro/">💰 Financeiro</a></li>
-        {% endif %}
-        <li class="nav-item"><a class="nav-link" href="/admin/">⚙️ Admin</a></li>
-      </ul>
+  <!-- 🔄 Banner em tela cheia -->
+  <section id="banner-section">
+    <img src="{% static 'images/banner_principal.jpg' %}" alt="Banner da Igreja" class="banner-full">
+  </section>
+
+  <style>
+    #banner-section {
+      width: 100%;
+      height: 100vh; /* ocupa toda a tela */
+      overflow: hidden;
+      margin: 0;
+      padding: 0;
+    }
+
+    .banner-full {
+      width: 100%;
+      height: 100%;
+      object-fit: cover; /* cobre a tela inteira */
+      display: block;
+    }
+
+    @media (max-width: 768px) {
+      .banner-full {
+        height: 100vh;
+        object-position: center;
+      }
+    }
+  </style>
+
+  <!-- 🔹 Barra de Navegação -->
+  <nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/">ADSJS</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon" style="filter: invert(1);"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item"><a class="nav-link" href="/">🏠 Início</a></li>
+          <li class="nav-item"><a class="nav-link" href="/eventos/">📅 Eventos</a></li>
+          <li class="nav-item"><a class="nav-link" href="/reunioes/">🕊️ Reuniões</a></li>
+          <li class="nav-item"><a class="nav-link" href="/missoes/">🌍 Missões</a></li>
+
+          {% if request.user.is_superuser %}
+            <li class="nav-item"><a class="nav-link" href="/financeiro/">💰 Financeiro</a></li>
+          {% endif %}
+        </ul>
+
+        <ul class="navbar-nav ms-auto">
+          {% if user.is_authenticated %}
+            <li class="nav-item"><a class="nav-link" href="/logout/">🚪 Logout</a></li>
+            {% if request.user.is_superuser %}
+              <li class="nav-item"><a class="nav-link" href="/admin/">⚙️ Admin</a></li>
+            {% endif %}
+          {% else %}
+            <li class="nav-item"><a class="nav-link" href="/login/">🔑 Login</a></li>
+          {% endif %}
+        </ul>
+      </div>
     </div>
-  </div>
-</nav>
+  </nav>
 
-<main class="container mt-4">
+  <main class="container mt-4">
     {% block content %}
     {% endblock %}
-</main>
+  </main>
 
-<footer>
+  <footer>
     <p>@WG Desenvolvedor Digital • Criação de Softwares</p>
-</footer>
-
+  </footer>
 </body>
 </html>
