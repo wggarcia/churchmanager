@@ -2,12 +2,18 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
+    # Páginas públicas
     path('', views.index, name='index'),
-    path('login/', views.login_view, name='login'),
-    path('logout/', views.logout_view, name='logout'),
-    path('dashboard/', views.dashboard, name='dashboard'),
     path('eventos/', views.eventos, name='eventos'),
     path('reunioes/', views.reunioes, name='reunioes'),
     path('missoes/', views.missoes, name='missoes'),
+
+    # Painel administrativo e financeiro
     path('financeiro/', views.financeiro, name='financeiro'),
+    path('dashboard/', views.dashboard, name='dashboard'),
+
+    # Autenticação
+    path('login/', views.login_view, name='login'),
+    path('logout/', views.logout_view, name='logout'),
 ]
+

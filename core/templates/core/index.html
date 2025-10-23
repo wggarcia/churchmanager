@@ -1,23 +1,40 @@
 {% extends "core/base.html" %}
 {% block content %}
-  {% if banner_url %}
-  <div class="card mb-4">
-    <img src="{{ banner_url }}" class="card-img-top" alt="Banner">
-    {% if banner_titulo or banner_subtitulo %}
-      <div class="card-body">
-        {% if banner_titulo %}<h4 class="card-title">{{ banner_titulo }}</h4>{% endif %}
-        {% if banner_subtitulo %}<p class="card-text">{{ banner_subtitulo }}</p>{% endif %}
-      </div>
-    {% endif %}
-  </div>
-  {% endif %}
 
-  <h3 class="mb-3">📅 Próximos Eventos</h3>
-  {% if eventos %}
-    <div class="row">
-      {% for e in eventos %}
+{% if banners %}
+<div id="bannerCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="10000" data-bs-pause="hover">
+  <div class="carousel-inner">
+    {% for b in banners %}
+      <div class="carousel-item {% if forloop.first %}active{% endif %}">
+        <img src="{{ b.imagem.url }}" class="d-block w-100" alt="{{ b.titulo }}">
+        {% if b.titulo or b.subtitulo %}
+          <div class="carousel-caption d-none d-md-block">
+            {% if b.titulo %}<h4>{{ b.titulo }}</h4>{% endif %}
+            {% if b.subtitulo %}<p>{{ b.subtitulo }}</p>{% endif %}
+          </div>
+        {% endif %}
+      </div>
+    {% endfor %}
+  </div>
+
+  <button class="carousel-control-prev" type="button" data-bs-target="#bannerCarousel" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#bannerCarousel" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+  </button>
+</div>
+{% endif %}
+
+<h3 class="mb-3 text-center">📅 Próximos Eventos</h3>
+{% if eventos %}
+  <div class="row">
+    {% for e in eventos %}
       <div class="col-md-6">
-        <div class="card mb-3">
+        <div class="card mb-3 shadow-sm">
+          {% if e.capa %}
+          <img src="{{ e.capa.url }}" class="card-img-top" alt="{{ e.titulo }}">
+          {% endif %}
           <div class="card-body">
             <h5 class="card-title">{{ e.titulo }}</h5>
             <small class="text-muted">{{ e.data|date:"d/m/Y" }}</small>
@@ -25,9 +42,9 @@
           </div>
         </div>
       </div>
-      {% endfor %}
-    </div>
-  {% else %}
-    <p class="text-muted">Sem eventos cadastrados.</p>
-  {% endif %}
+    {% endfor %}
+  </div>
+{% else %}
+  <p class="text-muted text-center">Sem eventos cadastrados.</p>
+{% endif %}
 {% endblock %}

@@ -1,21 +1,23 @@
 {% extends "core/base.html" %}
 {% block content %}
-<h3>🌍 Missões</h3>
+<h3 class="text-center mb-4">🌍 Missões</h3>
 
-<table class="table table-striped table-bordered table-hover align-middle">
-  <thead class="table-light text-center">
-    <tr>
-      <th>Nome da Missão</th>
-    </tr>
-  </thead>
-  <tbody>
+{% if missoes %}
+  <div class="row">
     {% for m in missoes %}
-    <tr>
-      <td>{{ m.nome }}</td>
-    </tr>
-    {% empty %}
-    <tr><td class="text-center text-muted">Nenhuma missão cadastrada.</td></tr>
+      <div class="col-md-6 mb-4">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <h5 class="card-title">{{ m.nome }}</h5>
+            <p class="card-text">{{ m.descricao|default:"Sem descrição." }}</p>
+            {% if m.local %}<p><strong>Local:</strong> {{ m.local }}</p>{% endif %}
+            {% if m.data_inicio %}<p><strong>Início:</strong> {{ m.data_inicio|date:"d/m/Y" }}</p>{% endif %}
+          </div>
+        </div>
+      </div>
     {% endfor %}
-  </tbody>
-</table>
+  </div>
+{% else %}
+  <p class="text-muted text-center">Nenhuma missão cadastrada.</p>
+{% endif %}
 {% endblock %}
