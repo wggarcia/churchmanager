@@ -1,16 +1,16 @@
-# core/management/commands/init_configportal.py
 from django.core.management.base import BaseCommand
 from core.models import ConfigPortal
 
 class Command(BaseCommand):
-    help = "Cria automaticamente o primeiro registro ConfigPortal se não existir"
+    help = "Cria uma configuração padrão do portal se não existir."
 
     def handle(self, *args, **options):
         if not ConfigPortal.objects.exists():
             ConfigPortal.objects.create(
-                nome="Assembleia de Deus SJS",
-                pastor="Pr. Responsável",
+                nome_igreja="Assembleia de Deus Só Jesus Salva",
+                pastor="Pastora Angélica Coutinho dos Santos",
+                mensagem_boas_vindas="Bem-vindo ao portal da Assembleia de Deus Só Jesus Salva!",
             )
-            self.stdout.write(self.style.SUCCESS("✅ ConfigPortal criado com sucesso."))
+            self.stdout.write(self.style.SUCCESS("✅ Configuração padrão criada com sucesso!"))
         else:
             self.stdout.write(self.style.WARNING("⚠️ Já existe um ConfigPortal. Nenhuma ação necessária."))
