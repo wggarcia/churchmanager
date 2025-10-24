@@ -1,0 +1,41 @@
+{% extends "core/base.html" %}
+{% block content %}
+<div class="container mt-4">
+  <h2 class="text-center mb-4">📋 Escala de Cultos</h2>
+
+  {% if escalas %}
+  <div class="table-responsive">
+    <table class="table table-striped table-bordered shadow-sm">
+      <thead class="table-dark">
+        <tr>
+          <th>Data</th>
+          <th>Culto</th>
+          <th>Obreiros Escalados</th>
+          <th>Função / Tarefa</th>
+          <th>Local</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for escala in escalas %}
+        <tr>
+          <td>{{ escala.data|date:"d/m/Y" }}</td>
+          <td>{{ escala.culto }}</td>
+          <td>
+            {% for obreiro in escala.obreiros.all %}
+              {{ obreiro.nome }}{% if not forloop.last %}, {% endif %}
+            {% empty %}
+              <em>—</em>
+            {% endfor %}
+          </td>
+          <td>{{ escala.tarefa|default:"—" }}</td>
+          <td>{{ escala.local|default:"—" }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <p class="text-center text-muted">Nenhuma escala cadastrada.</p>
+  {% endif %}
+</div>
+{% endblock %}

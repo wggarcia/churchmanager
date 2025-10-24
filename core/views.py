@@ -82,10 +82,10 @@ def ministerios(request):
 
 
 @login_required
-def reunioes(request):
-    """Escalas de serviço"""
-    escalas = EscalaServico.objects.select_related().all().order_by('-data')
-    return render(request, "core/reunioes.html", {"escalas": escalas})
+def cultos(request):
+    """Escala de Cultos"""
+    escalas = EscalaServico.objects.prefetch_related("obreiros").all().order_by("-data")
+    return render(request, "core/escala_obreiro.html", {"escalas": escalas})
 
 
 @login_required

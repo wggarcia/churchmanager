@@ -5,7 +5,7 @@ urlpatterns = [
     # Páginas públicas
     path('', views.index, name='index'),
     path('eventos/', views.eventos, name='eventos'),
-    path('reunioes/', views.reunioes, name='reunioes'),
+    path("cultos/", views.cultos, name="cultos"),
     path('missoes/', views.missoes, name='missoes'),
 
     # Painel administrativo e financeiro

@@ -220,14 +220,16 @@ class Missao(models.Model):
 
 # -------------------- ESCALA DE SERVIÇO --------------------
 class EscalaServico(models.Model):
-    culto = models.CharField(max_length=100, default="Culto de Domingo")
-    data = models.DateField(default=timezone.now)
-    tarefa = models.CharField(max_length=100, blank=True, null=True)
-    obreiros = models.ManyToManyField(Obreiro, blank=True)
+    culto = models.CharField("Culto", max_length=100, default="Culto de Domingo")
+    data = models.DateField("Data do Culto", default=timezone.now)
+    tarefa = models.CharField("Função / Tarefa", max_length=150, blank=True, null=True)
+    local = models.CharField("Local do Culto", max_length=150, blank=True, null=True)
+    obreiros = models.ManyToManyField(Obreiro, verbose_name="Obreiros Escalados", blank=True)
 
     class Meta:
-        verbose_name = "Escala de Serviço"
-        verbose_name_plural = "Escalas de Serviço"
+        verbose_name = "Escala de Culto"
+        verbose_name_plural = "Escala de Cultos"
+        ordering = ["-data"]
 
     def __str__(self):
-        return f"{self.culto} - {self.data}"
+        return f"{self.culto} - {self.data.strftime('%d/%m/%Y')}"

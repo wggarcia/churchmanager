@@ -1,0 +1,49 @@
+:root {
+    --cor-primaria: #1e88e5;
+    --cor-secundaria: #1565c0;
+    --cor-fundo: #f5f6fa;
+}
+
+body {
+    background-color: var(--cor-fundo);
+    font-family: "Inter", sans-serif;
+}
+
+#header {
+    background: linear-gradient(90deg, var(--cor-primaria), var(--cor-secundaria));
+    color: white;
+}
+
+#branding h1 {
+    color: white !important;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+a {
+    color: var(--cor-primaria);
+}
+
+a:hover {
+    color: var(--cor-secundaria);
+}
+
+.module caption {
+    background: var(--cor-primaria);
+    color: white;
+    font-weight: bold;
+}
+
+.submit-row input {
+    background: var(--cor-primaria);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 15px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.submit-row input:hover {
+    background: var(--cor-secundaria);
+}

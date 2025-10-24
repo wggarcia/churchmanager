@@ -1,19 +1,27 @@
-{% extends 'core/base.html' %}
+{% extends "core/base.html" %}
 {% block content %}
 <div class="container mt-4">
-  <h2 class="text-success mb-3">📅 Eventos da Igreja</h2>
+  <h2 class="text-center mb-4">📅 Eventos</h2>
+
   {% if eventos %}
-    <div class="list-group">
-      {% for evento in eventos %}
-        <div class="list-group-item">
-          <h5>{{ evento.nome }}</h5>
-          <p>📅 {{ evento.data|date:"d/m/Y" }} | 📍 {{ evento.local }}</p>
-          <p>{{ evento.descricao }}</p>
+  <div class="row">
+    {% for evento in eventos %}
+    <div class="col-md-4 mb-4">
+      <div class="card shadow-sm h-100">
+        {% if evento.imagem %}
+        <img src="{{ evento.imagem.url }}" class="card-img-top" alt="{{ evento.nome }}" style="height: 250px; object-fit: cover;">
+        {% endif %}
+        <div class="card-body">
+          <h5 class="card-title">{{ evento.nome }}</h5>
+          <p class="card-text">{{ evento.descricao|truncatechars:100 }}</p>
+          <p class="text-muted"><i class="bi bi-calendar-event"></i> {{ evento.data|date:"d/m/Y" }}</p>
         </div>
-      {% endfor %}
+      </div>
     </div>
+    {% endfor %}
+  </div>
   {% else %}
-    <p class="text-muted">Nenhum evento cadastrado até o momento.</p>
+  <p class="text-center text-muted">Nenhum evento cadastrado.</p>
   {% endif %}
 </div>
 {% endblock %}
