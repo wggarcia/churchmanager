@@ -119,9 +119,12 @@
 
 <body
   {% if config and config.plano_fundo %}
-    style="background: url('{{ config.plano_fundo.url }}') no-repeat center center;
+    style="background-image: url('{{ config.plano_fundo.url }}');
+           background-repeat: no-repeat;
+           background-position: center;
            background-size: cover;"
   {% endif %}
+
 >
 
 <!-- NAVBAR -->
