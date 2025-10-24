@@ -69,3 +69,56 @@ footer {
   from { opacity: 0; transform: translateY(15px); }
   to { opacity: 1; transform: translateY(0); }
 }
+/* ======= Ajustes para celular e layout responsivo ======= */
+
+header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 10px;
+}
+
+header h1, header .titulo-site {
+  font-size: 1.2rem;
+  word-wrap: break-word;
+  max-width: 90vw;
+}
+
+footer {
+  position: relative;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+  padding: 10px;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: scroll; /* Faz o fundo rolar no celular */
+}
+
+main {
+  flex: 1;
+}
+
+/* Ajustes para celular */
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1rem;
+  }
+  footer p {
+    font-size: 0.9rem;
+  }
+  .container {
+    padding: 10px;
+  }
+}

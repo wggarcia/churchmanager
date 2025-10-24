@@ -136,6 +136,8 @@ p, .card-title, .card-text {
           </li>
         {% endif %}
 
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 
         {% if user.is_authenticated %}
           <li class="nav-item"><a class="nav-link text-white fw-semibold" href="{% url 'logout' %}">🚪 Logout</a></li>
