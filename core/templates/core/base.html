@@ -174,13 +174,19 @@
 <!-- RODAPÉ -->
 <footer>
   <p>{{ igreja_nome }} — {{ pastor_nome }}<br>
-  <small>© {{ now|date:"Y" }} Todos os direitos reservados.</small></p>
+  <small>© {{ now|date:"Y" }} Todos os direitos reservados WGdigital software.</small></p>
 
-    <div style="margin-top: 10px;">
-    <a href="https://www.instagram.com/@assdedeuscoelho" target="_blank">
-      <img src="{% static 'img/instagram.png' %}" alt="Instagram" width="30">
+    <div style="margin: 8px 0;">
+    <a href="https://www.instagram.com/adsjs_oficial" target="_blank">
+      <img src="{% static 'img/instagram.png' %}" 
+           alt="Instagram" 
+           width="28" 
+           style="vertical-align: middle; margin-right: 6px;">
+      <span style="color: #ffd700; font-weight: 500;">Siga-nos no Instagram</span>
     </a>
   </div>
+
+  <small>© {{ now|date:"Y" }} Todos os direitos reservados.</small>
 </footer>
 
 <!-- Bootstrap JS -->
