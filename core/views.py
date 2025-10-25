@@ -19,10 +19,10 @@ def index(request):
 
 
 def eventos(request):
-    """Página de eventos (mostra apenas os futuros)"""
+    """Lista apenas eventos de hoje em diante, ordenados por data"""
     hoje = date.today()
     eventos = Evento.objects.filter(data__gte=hoje).order_by('data')
-    return render(request, 'core/eventos.html', {'eventos': eventos})
+    return render(request, 'core/eventos.html', {'eventos': eventos, 'hoje': hoje})
 
 
 
