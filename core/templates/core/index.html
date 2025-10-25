@@ -1,50 +1,61 @@
 {% extends "core/base.html" %}
 {% block content %}
+<div class="container mt-4 mb-5">
 
-{% if banners %}
-<div id="bannerCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
-  <div class="carousel-inner">
-    {% for banner in banners %}
-    <div class="carousel-item {% if forloop.first %}active{% endif %}">
-      <img src="{{ banner.imagem.url }}" class="d-block w-100" style="height: 550px; object-fit: cover;" alt="{{ banner.titulo }}">
-      {% if banner.titulo %}
-      <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded p-2">
-        <h5>{{ banner.titulo }}</h5>
-        <p>{{ banner.descricao }}</p>
+  <!-- Cabeçalho -->
+  <div class="text-center mb-4 p-2 rounded"
+       style="background: rgba(0, 0, 0, 0.5); color: #fff; text-shadow: 1px 1px 5px rgba(0,0,0,0.9);">
+    <h2 class="mb-1">🏠 Bem-vindo à ADSJS</h2>
+    <p class="mb-0">Assembleia de Deus Só Jesus Salva</p>
+  </div>
+
+  <!-- Banners -->
+  {% if banners %}
+  <div id="bannerCarousel" class="carousel slide mb-4" data-bs-ride="carousel">
+    <div class="carousel-inner">
+      {% for banner in banners %}
+      <div class="carousel-item {% if forloop.first %}active{% endif %}">
+        <img src="{{ banner.imagem.url }}" class="d-block w-100" alt="{{ banner.titulo }}"
+             style="height: 400px; object-fit: cover;">
+        {% if banner.titulo %}
+        <div class="carousel-caption d-none d-md-block">
+          <h5>{{ banner.titulo }}</h5>
+        </div>
+        {% endif %}
       </div>
-      {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- Últimos eventos -->
+  {% if eventos %}
+  <div class="text-center mb-4 p-2 rounded"
+       style="background: rgba(0,0,0,0.5); color: #fff; text-shadow: 1px 1px 5px rgba(0,0,0,0.9);">
+    <h3>📅 Últimos Eventos</h3>
+  </div>
+
+  <div class="row">
+    {% for evento in eventos %}
+    <div class="col-md-4 mb-4">
+      <div class="card shadow-sm h-100 border-0" style="border-radius: 12px; background: rgba(255,255,255,0.95);">
+        {% if evento.imagem %}
+        <img src="{{ evento.imagem.url }}" class="card-img-top" alt="{{ evento.nome }}"
+             style="height: 240px; object-fit: cover;">
+        {% endif %}
+        <div class="card-body">
+          <h5 class="fw-bold" style="color: #003366; text-shadow: 1px 1px 3px rgba(255,255,255,0.9);">
+            {{ evento.nome }}
+          </h5>
+          <p style="color: #333; text-shadow: 1px 1px 3px rgba(255,255,255,0.8);">
+            {{ evento.descricao|truncatechars:100 }}
+          </p>
+        </div>
+      </div>
     </div>
     {% endfor %}
   </div>
-  <button class="carousel-control-prev" type="button" data-bs-target="#bannerCarousel" data-bs-slide="prev">
-    <span class="carousel-control-prev-icon"></span>
-  </button>
-  <button class="carousel-control-next" type="button" data-bs-target="#bannerCarousel" data-bs-slide="next">
-    <span class="carousel-control-next-icon"></span>
-  </button>
+  {% endif %}
+
 </div>
-
-{% endif %}
-
-<h3 class="mb-3 text-center">📅 Próximos Eventos</h3>
-{% if eventos %}
-  <div class="row">
-    {% for e in eventos %}
-      <div class="col-md-6">
-        <div class="card mb-3 shadow-sm">
-          {% if e.capa %}
-          <img src="{{ e.capa.url }}" class="card-img-top" alt="{{ e.titulo }}">
-          {% endif %}
-          <div class="card-body">
-            <h5 class="card-title">{{ e.titulo }}</h5>
-            <small class="text-muted">{{ e.data|date:"d/m/Y" }}</small>
-            <p class="mt-2 mb-0">{{ e.descricao }}</p>
-          </div>
-        </div>
-      </div>
-    {% endfor %}
-  </div>
-{% else %}
-  <p class="text-muted text-center">Sem eventos cadastrados.</p>
-{% endif %}
 {% endblock %}

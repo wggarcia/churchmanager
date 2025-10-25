@@ -1,23 +1,40 @@
 {% extends "core/base.html" %}
 {% block content %}
-<h3 class="text-center mb-4">🌍 Missões</h3>
+<div class="container mt-4 mb-5">
 
-{% if missoes %}
+  <!-- Cabeçalho -->
+  <div class="text-center mb-4 p-2 rounded"
+       style="background: rgba(0,0,0,0.5); color: #fff; text-shadow: 1px 1px 5px rgba(0,0,0,0.9);">
+    <h2 class="mb-1">🌍 Missões</h2>
+    <p class="mb-0">Conheça as frentes missionárias apoiadas pela ADSJS</p>
+  </div>
+
+  {% if missoes %}
   <div class="row">
-    {% for m in missoes %}
-      <div class="col-md-6 mb-4">
-        <div class="card shadow-sm">
-          <div class="card-body">
-            <h5 class="card-title">{{ m.nome }}</h5>
-            <p class="card-text">{{ m.descricao|default:"Sem descrição." }}</p>
-            {% if m.local %}<p><strong>Local:</strong> {{ m.local }}</p>{% endif %}
-            {% if m.data_inicio %}<p><strong>Início:</strong> {{ m.data_inicio|date:"d/m/Y" }}</p>{% endif %}
-          </div>
+    {% for missao in missoes %}
+    <div class="col-md-4 mb-4">
+      <div class="card shadow-sm h-100 border-0" style="background: rgba(255,255,255,0.95); border-radius: 12px;">
+        {% if missao.imagem %}
+        <img src="{{ missao.imagem.url }}" class="card-img-top" alt="{{ missao.nome }}"
+             style="height: 240px; object-fit: cover;">
+        {% endif %}
+        <div class="card-body">
+          <h5 class="card-title fw-bold" style="color: #003366; text-shadow: 1px 1px 3px rgba(255,255,255,0.8);">
+            {{ missao.nome }}
+          </h5>
+          <p class="card-text" style="color: #333; text-shadow: 1px 1px 3px rgba(255,255,255,0.8);">
+            {{ missao.descricao|truncatechars:150 }}
+          </p>
         </div>
       </div>
+    </div>
     {% endfor %}
   </div>
-{% else %}
-  <p class="text-muted text-center">Nenhuma missão cadastrada.</p>
-{% endif %}
+  {% else %}
+  <p class="text-center text-light fs-5" style="text-shadow: 1px 1px 5px rgba(0,0,0,0.8);">
+    Nenhuma missão cadastrada no momento.
+  </p>
+  {% endif %}
+
+</div>
 {% endblock %}
