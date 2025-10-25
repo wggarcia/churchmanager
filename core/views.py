@@ -18,10 +18,13 @@ def index(request):
     return render(request, "core/index.html", {"eventos": eventos, "banners": banners})
 
 
+from datetime import date
+
 def eventos(request):
-    """Lista de todos os eventos"""
-    eventos = Evento.objects.all().order_by('-data')
-    return render(request, "core/eventos.html", {"eventos": eventos})
+    hoje = date.today()
+    eventos = Evento.objects.filter(data__gte=hoje).order_by('data')
+    return render(request, 'eventos.html', {'eventos': eventos})
+
 
 
 # -------------------- LOGIN / LOGOUT --------------------
