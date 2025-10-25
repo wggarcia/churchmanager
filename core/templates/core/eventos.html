@@ -3,26 +3,36 @@
 <div class="container mt-4 mb-5">
 
   <!-- Título e Data Atual -->
-  <h2 class="text-center mb-2">📅 Próximos Eventos</h2>
-  <p class="text-center text-muted">Hoje é {{ hoje|date:"d/m/Y" }}</p>
-  <hr class="mb-4" style="border-top: 2px solid #ffd700; width: 60px; margin: 0 auto;">
+  <div class="text-center mb-4 p-2 rounded" 
+       style="background: rgba(0, 0, 0, 0.5); color: #fff; text-shadow: 1px 1px 5px rgba(0,0,0,0.9);">
+    <h2 class="mb-1">📅 Próximos Eventos</h2>
+    <p class="mb-0">Hoje é {{ hoje|date:"d/m/Y" }}</p>
+  </div>
 
   <!-- Lista de eventos -->
   {% if eventos %}
   <div class="row">
     {% for evento in eventos %}
     <div class="col-md-4 mb-4">
-      <div class="card shadow-sm h-100 border-0" style="border-radius: 12px; overflow: hidden;">
+      <div class="card shadow-sm h-100 border-0" 
+           style="border-radius: 12px; overflow: hidden; background: rgba(255,255,255,0.95);">
         {% if evento.imagem %}
         <img src="{{ evento.imagem.url }}" 
              class="card-img-top" 
              alt="{{ evento.nome }}" 
              style="height: 240px; object-fit: cover;">
         {% endif %}
-        <div class="card-body bg-light">
-          <h5 class="card-title text-primary fw-bold">{{ evento.nome }}</h5>
-          <p class="card-text text-secondary">{{ evento.descricao|truncatechars:120 }}</p>
-          <p class="text-muted mb-0">
+        <div class="card-body">
+          <h5 class="card-title fw-bold" 
+              style="color: #003366; text-shadow: 1px 1px 3px rgba(255,255,255,0.9);">
+              {{ evento.nome }}
+          </h5>
+          <p class="card-text" 
+             style="color: #222; text-shadow: 1px 1px 3px rgba(255,255,255,0.7);">
+             {{ evento.descricao|truncatechars:120 }}
+          </p>
+          <p class="text-muted mb-0 fw-semibold" 
+             style="text-shadow: 1px 1px 2px rgba(255,255,255,0.8);">
             <i class="bi bi-calendar-event"></i> {{ evento.data|date:"d/m/Y" }}
           </p>
         </div>
@@ -32,7 +42,9 @@
   </div>
   {% else %}
   <div class="text-center mt-5">
-    <p class="text-muted fs-5">🎉 Nenhum evento futuro cadastrado no momento.</p>
+    <p class="fs-5 text-light" style="text-shadow: 1px 1px 5px rgba(0,0,0,0.8);">
+      🎉 Nenhum evento futuro cadastrado no momento.
+    </p>
   </div>
   {% endif %}
 
