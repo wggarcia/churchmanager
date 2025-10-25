@@ -18,12 +18,11 @@ def index(request):
     return render(request, "core/index.html", {"eventos": eventos, "banners": banners})
 
 
-from datetime import date
-
 def eventos(request):
+    """Página de eventos (mostra apenas os futuros)"""
     hoje = date.today()
     eventos = Evento.objects.filter(data__gte=hoje).order_by('data')
-    return render(request, 'eventos.html', {'eventos': eventos})
+    return render(request, 'core/eventos.html', {'eventos': eventos})
 
 
 
