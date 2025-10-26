@@ -3,9 +3,21 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 
+urlpatterns = from django.urls import path
+from . import views
+
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', include('core.urls')),
+    path("", views.index, name="index"),
+    path("eventos/", views.eventos, name="eventos"),
+    path("cultos/", views.cultos, name="cultos"),
+    path("missoes/", views.missoes, name="missoes"),
+    path("financeiro/", views.financeiro, name="financeiro"),
+    path("dashboard/", views.dashboard, name="dashboard"),  
+    path("membros/", views.membros, name="membros"),
+    path("visitantes/", views.visitantes, name="visitantes"),
+    path("ministerios/", views.ministerios, name="ministerios"),
+    path("login/", views.login_view, name="login"),
+    path("logout/", views.logout_view, name="logout"),
 ]
 
 if settings.DEBUG:
