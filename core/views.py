@@ -27,10 +27,12 @@ def eventos(request):
 
 
 # -------------------- LOGIN / LOGOUT --------------------
+from django.shortcuts import redirect
+
 def login_view(request):
-    """Tela de login"""
-    if request.user.is_authenticated:
-        return redirect("dashboard")
+    ...
+    return redirect('index')
+
 
     error = None
     if request.method == "POST":
