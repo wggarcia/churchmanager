@@ -225,6 +225,7 @@ class EscalaServico(models.Model):
     tarefa = models.CharField("Função / Tarefa", max_length=150, blank=True, null=True)
     local = models.CharField("Local do Culto", max_length=150, blank=True, null=True)
     obreiros = models.ManyToManyField(Obreiro, verbose_name="Obreiros Escalados", blank=True)
+    observacoes = models.TextField("Observações", blank=True, null=True)
 
     class Meta:
         verbose_name = "Escala de Culto"
@@ -233,3 +234,18 @@ class EscalaServico(models.Model):
 
     def __str__(self):
         return f"{self.culto} - {self.data.strftime('%d/%m/%Y')}"
+
+
+# 🔹 NOVO: Conecta Escala + Obreiro + Função (sem apagar nada seu)
+class EscalaObreiro(models.Model):
+    escala = models.ForeignKey(EscalaServico, on_delete=models.CASCADE)
+    obreiro = models.ForeignKey(Obreiro, on_delete=models.CASCADE)
+    funcao = models.CharField("Função no Culto", max_length=150, blank=True, null=True)
+
+    class Meta:
+        verbose_name = "Obreiro na Escala"
+        verbose_name_plural = "Obreiros nas Escalas"
+        ordering = ["escala", "obreiro"]
+
+    def __str__(self):
+        return f"{self.obreiro.nome} - {self.funcao or 'Sem função'}"

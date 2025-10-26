@@ -1,35 +1,47 @@
 {% extends "core/base.html" %}
 {% block content %}
-<div class="container mt-4 mb-5">
-
-  <!-- Cabeçalho -->
-  <div class="text-center mb-4 p-2 rounded"
-       style="background: rgba(0,0,0,0.5); color: #fff; text-shadow: 1px 1px 5px rgba(0,0,0,0.9);">
-    <h2 class="mb-1">🕊️ Escala de Cultos</h2>
-  </div>
+<div class="container mt-4">
+  <h2 class="text-center mb-4">🕊️ Escala de Cultos</h2>
 
   {% if escalas %}
   {% for escala in escalas %}
-  <div class="card shadow-sm mb-3 border-0" style="background: rgba(255,255,255,0.95); border-radius: 12px;">
+  <div class="card shadow-lg mb-4" style="background: rgba(0, 0, 0, 0.6); color: #fff;">
     <div class="card-body">
-      <h5 class="card-title fw-bold" style="color: #003366; text-shadow: 1px 1px 3px rgba(255,255,255,0.8);">
-        {{ escala.titulo }} — {{ escala.data|date:"d/m/Y" }}
+      <h5 class="card-title text-warning">
+        📅 {{ escala.data|date:"d/m/Y" }} — {{ escala.culto }}
       </h5>
-      <p class="card-text" style="color: #222; text-shadow: 1px 1px 3px rgba(255,255,255,0.7);">
-        {{ escala.descricao }}
-      </p>
-      {% if escala.obreiros.all %}
-      <p class="mb-0" style="color: #444;">👥 <strong>Obreiros:</strong>
-        {{ escala.obreiros.all|join:", " }}
-      </p>
+
+      {% if escala.local %}
+      <p class="mb-2"><strong>📍 Local:</strong> {{ escala.local }}</p>
       {% endif %}
+
+      {% if escala.tarefa %}
+      <p><strong>🎯 Tema / Observação:</strong> {{ escala.tarefa }}</p>
+      {% endif %}
+
+      <hr style="border-color: #ffd700; opacity: 0.6;">
+
+      <h6 class="text-warning">👥 Obreiros Escalados:</h6>
+      <ul class="list-unstyled mb-0">
+        {% for escala_obreiro in escala.escalaobreiro_set.all %}
+          <li style="margin-bottom: 6px;">
+            <strong>{{ escala_obreiro.obreiro.nome }}</strong>
+            {% if escala_obreiro.obreiro.cargo %}
+              — {{ escala_obreiro.obreiro.cargo }}
+            {% endif %}
+            {% if escala_obreiro.funcao %}
+              <span style="color: #ffd700;">({{ escala_obreiro.funcao }})</span>
+            {% endif %}
+          </li>
+        {% empty %}
+          <li class="text-muted">Nenhum obreiro escalado ainda.</li>
+        {% endfor %}
+      </ul>
     </div>
   </div>
   {% endfor %}
   {% else %}
-  <p class="text-center text-light fs-5" style="text-shadow: 1px 1px 5px rgba(0,0,0,0.8);">
-    Nenhum culto cadastrado.
-  </p>
+  <p class="text-center text-muted">Nenhuma escala cadastrada no momento.</p>
   {% endif %}
 </div>
 {% endblock %}

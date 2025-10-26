@@ -2,7 +2,7 @@ from django.contrib import admin
 from .models import (
     ConfigPortal, Membro, Obreiro, Departamento, Evento,
     Contribuicao, Despesa, Ministerio, Visitante,
-    EscalaServico, Missao, Banner
+    EscalaServico, Missao, Banner, EscalaObreiro  # 👈 adicionado EscalaObreiro aqui
 )
 
 # -------------------- CONFIGURAÇÃO DO PORTAL --------------------
@@ -85,12 +85,17 @@ class VisitanteAdmin(admin.ModelAdmin):
 
 
 # -------------------- ESCALA DE SERVIÇO --------------------
+# Novo bloco — inclui a relação entre obreiro e função no culto
+class EscalaObreiroInline(admin.TabularInline):
+    model = EscalaObreiro
+    extra = 1  # adiciona 1 linha vazia por padrão
+
 @admin.register(EscalaServico)
 class EscalaServicoAdmin(admin.ModelAdmin):
-    list_display = ("data", "culto", "tarefa")
+    list_display = ("data", "culto", "local")
     list_filter = ("data",)
-    filter_horizontal = ("obreiros",)
-    search_fields = ("culto", "tarefa")
+    search_fields = ("culto", "local")
+    inlines = [EscalaObreiroInline]  # 👈 adiciona os obreiros e funções dentro da escala
 
 
 # -------------------- MISSÕES --------------------
