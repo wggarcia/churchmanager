@@ -11,7 +11,7 @@ urlpatterns = [
     # Painel administrativo e financeiro
     path('financeiro/', views.financeiro, name='financeiro'),
     path('dashboard/', views.dashboard, name='dashboard'),
-    path("anotacao/", views.bloco_notas_site, name="bloco_notas"),
+    path("anotacao/", views.bloco_notas, name="bloco_notas"),
 
     # Autenticação
     path('login/', views.login_view, name='login'),
