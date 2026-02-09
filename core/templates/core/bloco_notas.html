@@ -1,29 +1,23 @@
-{% extends 'base.html' %}
+{% extends "core/base.html" %}
 
 {% block content %}
-<div class="container">
-  <div class="bloco">
-      <h1>{{ anotacao.titulo }}</h1>
-      <pre>{{ anotacao.texto }}</pre>
-      <small>
+<h2 class="mb-4">📝 Anotações Administrativas</h2>
+
+{% if anotacoes %}
+  {% for anotacao in anotacoes %}
+    <div class="content-overlay mb-4">
+      <h4>{{ anotacao.titulo|default:"Anotação Administrativa" }}</h4>
+
+      <p style="white-space: pre-wrap;">
+        {{ anotacao.texto }}
+      </p>
+
+      <small class="text-muted">
         Última atualização: {{ anotacao.atualizado_em|date:"d/m/Y H:i" }}
       </small>
-  </div>
-</div>
-
-<style>
-  .bloco {
-      background: #fff;
-      padding: 24px;
-      max-width: 700px;
-      margin: auto;
-      border-radius: 10px;
-      border-left: 6px solid #2c3e50;
-      box-shadow: 0 2px 6px rgba(0,0,0,.1);
-  }
-  pre {
-      white-space: pre-wrap;
-      font-family: inherit;
-  }
-</style>
+    </div>
+  {% endfor %}
+{% else %}
+  <p>Nenhuma anotação cadastrada.</p>
+{% endif %}
 {% endblock %}
