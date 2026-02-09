@@ -1,9 +1,22 @@
 from django.contrib import admin
 from .models import (
-    ConfigPortal, Membro, Obreiro, Departamento, Evento,
-    Contribuicao, Despesa, Ministerio, Visitante,
-    EscalaServico, Missao, Banner, EscalaObreiro  # 👈 adicionado EscalaObreiro aqui
+    ConfigPortal,
+    Banner,
+    Membro,
+    Obreiro,
+    Departamento,
+    Evento,
+    Contribuicao,
+    Despesa,
+    Ministerio,
+    Visitante,
+    Missao,
+    EscalaServico,
+    EscalaObreiro,
+    Nota,             # 👈 IMPORTA NOTA
+    AnotacaoAdmin,    # 👈 IMPORTA ANOTAÇÃO
 )
+
 
 # -------------------- CONFIGURAÇÃO DO PORTAL --------------------
 @admin.register(ConfigPortal)
@@ -111,3 +124,12 @@ class BannerAdmin(admin.ModelAdmin):
     list_display = ("titulo", "ordem", "ativo")
     list_filter = ("ativo",)
     search_fields = ("titulo",)
+
+
+@admin.register(AnotacaoAdmin)
+class AnotacaoAdminAdmin(admin.ModelAdmin):
+    list_display = ("titulo", "atualizado_em")
+
+    def has_add_permission(self, request):
+        # permite apenas UMA anotação
+        return not AnotacaoAdmin.objects.exists()

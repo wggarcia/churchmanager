@@ -19,7 +19,6 @@
   <meta name="theme-color" content="#003366">
 
   <style>
-    /* Plano de fundo geral do site */
     body {
       margin: 0;
       padding: 0;
@@ -30,7 +29,6 @@
       transition: background-image 0.5s ease-in-out;
     }
 
-    /* NAVBAR */
     .navbar {
       background-color: rgba(0, 0, 0, 0.7);
       backdrop-filter: blur(6px);
@@ -58,7 +56,6 @@
       white-space: normal;
     }
 
-    /* Carrossel / Banner */
     #bannerCarousel {
       width: 100%;
       overflow: hidden;
@@ -79,14 +76,12 @@
       text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
     }
 
-    /* Conteúdo interno */
     .content-overlay {
       background: rgba(255, 255, 255, 0.9);
       border-radius: 10px;
       padding: 1rem;
     }
 
-    /* Títulos */
     h2, h3, h4, h5 {
       color: #fff !important;
       text-shadow: 0 0 8px rgba(0, 0, 0, 0.9);
@@ -96,7 +91,6 @@
       margin-bottom: 1rem;
     }
 
-    /* Rodapé */
     footer {
       text-align: center;
       padding: 1rem;
@@ -105,7 +99,6 @@
       font-size: 14px;
     }
 
-    /* Responsividade */
     @media (max-width: 768px) {
       .navbar-brand {
         flex-direction: column;
@@ -134,7 +127,6 @@
   {% endif %}
 >
 
-<!-- NAVBAR -->
 <header class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
   <div class="container">
     <a class="navbar-brand d-flex align-items-center" href="{% url 'index' %}">
@@ -160,6 +152,15 @@
         <li class="nav-item"><a class="nav-link" href="{% url 'financeiro' %}">💰 Financeiro</a></li>
 
         {% if user.is_authenticated and user.is_superuser %}
+          <!-- ✅ ANOTAÇÕES (ADICIONADO) -->
+          <li class="nav-item">
+            <a class="nav-link text-info fw-semibold" href="{% url 'bloco_notas' %}">
+              📝 Anotações
+            </a>
+          </li>
+        {% endif %}
+
+        {% if user.is_authenticated and user.is_superuser %}
           <li class="nav-item"><a class="nav-link text-warning fw-semibold" href="/admin/">⚙️ Admin</a></li>
         {% endif %}
 
@@ -173,12 +174,10 @@
   </div>
 </header>
 
-<!-- CONTEÚDO PRINCIPAL -->
 <main class="container mt-4 mb-5">
   {% block content %}{% endblock %}
 </main>
 
-<!-- RODAPÉ -->
 <footer>
   <p>{{ igreja_nome }} — {{ pastor_nome }}<br>
 
@@ -195,7 +194,6 @@
   <small>© {{ now|date:"Y" }} Todos os direitos reservados WGdigital software.</small></p>
 </footer>
 
-<!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -278,3 +278,25 @@ class Nota(models.Model):
 
     def __str__(self):
         return self.titulo or f"Nota {self.id}"
+
+# -------------------- ANOTAÇÃO ADMINISTRATIVA --------------------
+class AnotacaoAdmin(models.Model):
+    titulo = models.CharField(
+        "Título",
+        max_length=150,
+        default="Anotação Administrativa"
+    )
+    texto = models.TextField(
+        "Anotação"
+    )
+    atualizado_em = models.DateTimeField(
+        "Última atualização",
+        auto_now=True
+    )
+
+    class Meta:
+        verbose_name = "Anotação do Admin"
+        verbose_name_plural = "Anotação do Admin"
+
+    def __str__(self):
+        return self.titulo

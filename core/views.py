@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.db.models import Sum
+from .models import AnotacaoAdmin
 
 from .models import (
     Membro, Evento, Contribuicao, Despesa, Departamento,
@@ -134,3 +135,9 @@ def financeiro(request):
         "desp_series": desp_series,
     }
     return render(request, "core/financeiro.html", ctx)
+
+def bloco_notas_site(request):
+    anotacao = AnotacaoAdmin.objects.first()
+    return render(request, "core/bloco_notas.html", {
+        "anotacao": anotacao
+    })
