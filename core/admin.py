@@ -129,7 +129,5 @@ class BannerAdmin(admin.ModelAdmin):
 @admin.register(AnotacaoAdmin)
 class AnotacaoAdminAdmin(admin.ModelAdmin):
     list_display = ("titulo", "atualizado_em")
-
-    def has_add_permission(self, request):
-        # permite apenas UMA anotação
-        return not AnotacaoAdmin.objects.exists()
+    search_fields = ("titulo", "conteudo")
+    ordering = ("-atualizado_em",)
