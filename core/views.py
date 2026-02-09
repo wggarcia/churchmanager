@@ -136,8 +136,8 @@ def financeiro(request):
     }
     return render(request, "core/financeiro.html", ctx)
 
-def bloco_notas_site(request):
-    anotacao = AnotacaoAdmin.objects.first()
+def bloco_notas(request):
+    anotacoes = AnotacaoAdmin.objects.all().order_by("-atualizado_em")
     return render(request, "core/bloco_notas.html", {
-        "anotacao": anotacao
+        "anotacoes": anotacoes
     })
