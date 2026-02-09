@@ -249,8 +249,8 @@ class EscalaObreiro(models.Model):
 
     def __str__(self):
         return f"{self.obreiro.nome} - {self.funcao or 'Sem função'}"
-    
-    
+
+
 # -------------------- BLOCO DE NOTAS --------------------
 class Nota(models.Model):
     titulo = models.CharField(
