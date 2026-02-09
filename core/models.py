@@ -249,3 +249,32 @@ class EscalaObreiro(models.Model):
 
     def __str__(self):
         return f"{self.obreiro.nome} - {self.funcao or 'Sem função'}"
+        
+
+# -------------------- BLOCO DE NOTAS --------------------
+class Nota(models.Model):
+    titulo = models.CharField(
+        "Título",
+        max_length=150,
+        blank=True,
+        null=True
+    )
+    conteudo = models.TextField(
+        "Conteúdo da Nota"
+    )
+    criado_em = models.DateTimeField(
+        "Criado em",
+        auto_now_add=True
+    )
+    atualizado_em = models.DateTimeField(
+        "Atualizado em",
+        auto_now=True
+    )
+
+    class Meta:
+        verbose_name = "Nota"
+        verbose_name_plural = "Bloco de Notas"
+        ordering = ["-atualizado_em"]
+
+    def __str__(self):
+        return self.titulo or f"Nota {self.id}"
