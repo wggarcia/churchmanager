@@ -1,61 +1,65 @@
 {% extends "core/base.html" %}
 {% block content %}
-<div class="container mt-4 mb-5">
-
-  <!-- Cabeçalho -->
-  <div class="text-center mb-4 p-2 rounded"
-       style="background: rgba(0, 0, 0, 0.5); color: #fff; text-shadow: 1px 1px 5px rgba(0,0,0,0.9);">
-    <h2 class="mb-1">🏠 Bem-vindo à ADSJS</h2>
-    <p class="mb-0">Assembleia de Deus Só Jesus Salva</p>
+<section class="hero-card fade-rise">
+  <div class="hero-inner">
+    <span class="eyebrow"><i class="bi bi-stars"></i> Portal Oficial</span>
+    <h1 class="hero-title">{{ config.nome_igreja|default:"Bem-vindo ao Portal da Igreja" }}</h1>
+    <p class="hero-subtitle">
+      {{ config.mensagem_boas_vindas|default:"Uma experiência moderna para comunicação, eventos e administração da igreja." }}
+    </p>
   </div>
+</section>
 
-  <!-- Banners -->
-  {% if banners %}
-  <div id="bannerCarousel" class="carousel slide mb-4" data-bs-ride="carousel">
+{% if banners %}
+<section class="mt-4 fade-rise delay-1">
+  <div id="bannerCarousel" class="carousel slide carousel-wrap" data-bs-ride="carousel">
     <div class="carousel-inner">
       {% for banner in banners %}
       <div class="carousel-item {% if forloop.first %}active{% endif %}">
-        <img src="{{ banner.imagem.url }}" class="d-block w-100" alt="{{ banner.titulo }}"
-             style="height: 400px; object-fit: cover;">
-        {% if banner.titulo %}
+        <img src="{{ banner.imagem.url }}" class="d-block w-100" alt="{{ banner.titulo|default:'Banner da igreja' }}">
+        {% if banner.titulo or banner.subtitulo %}
         <div class="carousel-caption d-none d-md-block">
-          <h5>{{ banner.titulo }}</h5>
+          {% if banner.titulo %}<h5>{{ banner.titulo }}</h5>{% endif %}
+          {% if banner.subtitulo %}<p>{{ banner.subtitulo }}</p>{% endif %}
         </div>
         {% endif %}
       </div>
       {% endfor %}
     </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#bannerCarousel" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Anterior</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#bannerCarousel" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Próximo</span>
+    </button>
   </div>
-  {% endif %}
+</section>
+{% endif %}
 
-  <!-- Últimos eventos -->
+<section class="section-card mt-4 p-4 fade-rise delay-2">
+  <h2 class="section-title"><i class="bi bi-calendar-heart"></i> Últimos Eventos</h2>
+
   {% if eventos %}
-  <div class="text-center mb-4 p-2 rounded"
-       style="background: rgba(0,0,0,0.5); color: #fff; text-shadow: 1px 1px 5px rgba(0,0,0,0.9);">
-    <h3>📅 Últimos Eventos</h3>
-  </div>
-
-  <div class="row">
+  <div class="card-stack">
     {% for evento in eventos %}
-    <div class="col-md-4 mb-4">
-      <div class="card shadow-sm h-100 border-0" style="border-radius: 12px; background: rgba(255,255,255,0.95);">
-        {% if evento.imagem %}
-        <img src="{{ evento.imagem.url }}" class="card-img-top" alt="{{ evento.nome }}"
-             style="height: 240px; object-fit: cover;">
-        {% endif %}
-        <div class="card-body">
-          <h5 class="fw-bold" style="color: #003366; text-shadow: 1px 1px 3px rgba(255,255,255,0.9);">
-            {{ evento.nome }}
-          </h5>
-          <p style="color: #333; text-shadow: 1px 1px 3px rgba(255,255,255,0.8);">
-            {{ evento.descricao|truncatechars:100 }}
-          </p>
-        </div>
+    <article class="content-card">
+      {% if evento.capa %}
+        <img src="{{ evento.capa.url }}" alt="{{ evento.titulo|default:'Evento' }}">
+      {% elif evento.imagem %}
+        <img src="{{ evento.imagem.url }}" alt="{{ evento.titulo|default:'Evento' }}">
+      {% endif %}
+      <div class="content-card-body">
+        <h3 class="content-card-title">{{ evento.titulo|default:"Evento da Igreja" }}</h3>
+        <p class="content-card-text">{{ evento.descricao|default:"Participe conosco desse momento especial."|truncatechars:120 }}</p>
+        <p class="meta-line"><i class="bi bi-clock-history"></i> {{ evento.data|date:"d/m/Y" }}</p>
       </div>
-    </div>
+    </article>
     {% endfor %}
   </div>
+  {% else %}
+  <div class="cm-empty">Ainda não há eventos cadastrados. Cadastre no painel para começar a divulgação.</div>
   {% endif %}
-
-</div>
+</section>
 {% endblock %}

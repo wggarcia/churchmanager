@@ -7,15 +7,15 @@ from django.db.models import Sum
 from .models import AnotacaoAdmin
 
 from .models import (
-    Membro, Evento, Contribuicao, Despesa, Departamento,
-    Visitante, Ministerio, EscalaServico, Missao, Banner
+    Membro, Evento, Contribuicao, Despesa,
+    Visitante, Ministerio, EscalaServico, Missao, Banner, PedidoOracao
 )
 
 # -------------------- PÁGINAS PÚBLICAS --------------------
 def index(request):
     """Página inicial do site"""
-    eventos = Evento.objects.all().order_by('-data')[:12]
-    banners = Banner.objects.filter(ativo=True).order_by('ordem')
+    eventos = Evento.objects.order_by("-data")[:12]
+    banners = Banner.objects.filter(ativo=True).order_by("ordem")
     return render(request, "core/index.html", {"eventos": eventos, "banners": banners})
 
 
@@ -61,6 +61,9 @@ def dashboard(request):
         "visitantes_total": Visitante.objects.count(),
         "ministerios_total": Ministerio.objects.count(),
         "reunioes_total": EscalaServico.objects.count(),
+        "eventos_total": Evento.objects.count(),
+        "pedidos_oracao_total": PedidoOracao.objects.count(),
+        "pedidos_oracao_pendentes": PedidoOracao.objects.filter(status=PedidoOracao.Status.PENDENTE).count(),
     }
     return render(request, "core/dashboard.html", ctx)
 
@@ -69,33 +72,54 @@ def dashboard(request):
 @login_required
 def membros(request):
     """Listagem de membros"""
-    return render(request, "core/membros.html", {"membros": Membro.objects.all()})
+    return render(request, "core/membros.html", {"membros": Membro.objects.order_by("nome")})
 
 
 @login_required
 def visitantes(request):
     """Listagem de visitantes"""
-    return render(request, "core/visitantes.html", {"visitantes": Visitante.objects.all()})
+    return render(request, "core/visitantes.html", {"visitantes": Visitante.objects.order_by("-data_visita")})
 
 
 @login_required
 def ministerios(request):
     """Listagem de ministérios"""
-    return render(request, "core/ministerios.html", {"ministerios": Ministerio.objects.all()})
+    return render(request, "core/ministerios.html", {"ministerios": Ministerio.objects.order_by("nome")})
 
 
-@login_required
 def cultos(request):
     """Escala de Cultos"""
     escalas = EscalaServico.objects.prefetch_related("obreiros").all().order_by("-data")
     return render(request, "core/escala_obreiro.html", {"escalas": escalas})
 
 
-@login_required
 def missoes(request):
     """Página de missões"""
     missoes = Missao.objects.all().order_by('nome')
     return render(request, "core/missoes.html", {"missoes": missoes})
+
+
+def pedido_oracao(request):
+    """Recebe pedidos de oração públicos."""
+    sucesso = False
+    if request.method == "POST":
+        nome = (request.POST.get("nome") or "").strip() or None
+        telefone = (request.POST.get("telefone") or "").strip() or None
+        email = (request.POST.get("email") or "").strip() or None
+        pedido = (request.POST.get("pedido") or "").strip()
+        confidencial = request.POST.get("confidencial") == "on"
+
+        if pedido:
+            PedidoOracao.objects.create(
+                nome=nome,
+                telefone=telefone,
+                email=email,
+                pedido=pedido,
+                confidencial=confidencial,
+            )
+            sucesso = True
+
+    return render(request, "core/pedido_oracao.html", {"sucesso": sucesso})
 
 
 # -------------------- FINANCEIRO (APENAS SUPERUSER) --------------------
@@ -136,8 +160,9 @@ def financeiro(request):
     }
     return render(request, "core/financeiro.html", ctx)
 
+@login_required
 def bloco_notas(request):
-    anotacoes = AnotacaoAdmin.objects.all().order_by("-atualizado_em")
+    anotacoes = AnotacaoAdmin.objects.order_by("-atualizado_em")
     return render(request, "core/bloco_notas.html", {
         "anotacoes": anotacoes
     })

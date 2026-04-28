@@ -1,11 +1,63 @@
 {% extends "core/base.html" %}
 {% block content %}
-<h3 class="mb-3">📊 Painel</h3>
-<div class="row g-3">
-  <div class="col-6 col-md-3"><div class="card text-center p-3">Membros<br><b>{{ membros_total }}</b></div></div>
-  <div class="col-6 col-md-3"><div class="card text-center p-3">Visitantes<br><b>{{ visitantes_total }}</b></div></div>
-  <div class="col-6 col-md-3"><div class="card text-center p-3">Ministérios<br><b>{{ ministerios_total }}</b></div></div>
-  <div class="col-6 col-md-3"><div class="card text-center p-3">Reuniões<br><b>{{ reunioes_total }}</b></div></div>
-</div>
-<p class="mt-4">Use o menu acima para navegar.</p>
+<section class="hero-card fade-rise">
+  <div class="hero-inner">
+    <span class="eyebrow"><i class="bi bi-speedometer2"></i> Gestão Interna</span>
+    <h1 class="hero-title">Painel Administrativo</h1>
+    <p class="hero-subtitle">Visão rápida da operação da igreja e acompanhamento dos ministérios.</p>
+  </div>
+</section>
+
+<section class="mt-4 soft-grid cols-4 fade-rise delay-1">
+  <article class="metric-card">
+    <p class="metric-label">Membros</p>
+    <p class="metric-value">{{ membros_total }}</p>
+    <p class="metric-hint">Base de membros cadastrados</p>
+  </article>
+  <article class="metric-card">
+    <p class="metric-label">Visitantes</p>
+    <p class="metric-value">{{ visitantes_total }}</p>
+    <p class="metric-hint">Acompanhamento de integração</p>
+  </article>
+  <article class="metric-card">
+    <p class="metric-label">Ministérios</p>
+    <p class="metric-value">{{ ministerios_total }}</p>
+    <p class="metric-hint">Frentes de atuação ativas</p>
+  </article>
+  <article class="metric-card">
+    <p class="metric-label">Escalas de Culto</p>
+    <p class="metric-value">{{ reunioes_total }}</p>
+    <p class="metric-hint">Escalas cadastradas</p>
+  </article>
+</section>
+
+<section class="mt-3 soft-grid cols-3 fade-rise delay-2">
+  <article class="metric-card">
+    <p class="metric-label">Eventos</p>
+    <p class="metric-value">{{ eventos_total }}</p>
+  </article>
+  <article class="metric-card">
+    <p class="metric-label">Pedidos de Oração</p>
+    <p class="metric-value">{{ pedidos_oracao_total }}</p>
+  </article>
+  <article class="metric-card">
+    <p class="metric-label">Pedidos Pendentes</p>
+    <p class="metric-value">{{ pedidos_oracao_pendentes }}</p>
+  </article>
+</section>
+
+<section class="section-card mt-4 p-4 fade-rise delay-3">
+  <h2 class="section-title"><i class="bi bi-lightning-charge"></i> Acesso rápido</h2>
+  <div class="d-flex flex-wrap gap-2">
+    <a class="cm-btn-outline" href="{% url 'membros' %}">Membros</a>
+    <a class="cm-btn-outline" href="{% url 'visitantes' %}">Visitantes</a>
+    <a class="cm-btn-outline" href="{% url 'ministerios' %}">Ministérios</a>
+    <a class="cm-btn-outline" href="{% url 'cultos' %}">Escala de Cultos</a>
+    {% if user.is_superuser %}
+      <a class="cm-btn-outline" href="{% url 'financeiro' %}">Financeiro</a>
+      <a class="cm-btn-outline" href="{% url 'bloco_notas' %}">Anotações</a>
+      <a class="cm-btn-outline" href="/admin/">Admin Django</a>
+    {% endif %}
+  </div>
+</section>
 {% endblock %}

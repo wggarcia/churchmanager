@@ -1,25 +1,31 @@
 {% extends "core/base.html" %}
 {% block content %}
-<div class="container mt-5" style="max-width: 400px;">
-  <h3 class="text-center text-light mb-4">🔐 Acesso Restrito</h3>
+<section class="cm-login-panel fade-rise">
+  <div class="hero-card mb-3">
+    <div class="hero-inner text-center">
+      <span class="eyebrow"><i class="bi bi-shield-lock"></i> Acesso Seguro</span>
+      <h1 class="hero-title">Entrar no Painel</h1>
+      <p class="hero-subtitle">Use suas credenciais para acessar a administração da igreja.</p>
+    </div>
+  </div>
 
   {% if error %}
-    <div class="alert alert-danger text-center">{{ error }}</div>
+    <div class="alert alert-danger">{{ error }}</div>
   {% endif %}
 
-  <form method="post" class="card p-4 bg-light shadow">
+  <form method="post" class="form-card">
     {% csrf_token %}
     <div class="mb-3">
-      <label for="username" class="form-label">Usuário</label>
-      <input type="text" class="form-control" id="username" name="username" required />
+      <label for="username" class="form-label fw-semibold">Usuário</label>
+      <input type="text" class="form-control cm-input" id="username" name="username" required>
     </div>
 
     <div class="mb-3">
-      <label for="password" class="form-label">Senha</label>
-      <input type="password" class="form-control" id="password" name="password" required />
+      <label for="password" class="form-label fw-semibold">Senha</label>
+      <input type="password" class="form-control cm-input" id="password" name="password" required>
     </div>
 
-    <button type="submit" class="btn btn-primary w-100">Entrar</button>
+    <button type="submit" class="btn cm-btn w-100">Entrar</button>
   </form>
-</div>
+</section>
 {% endblock %}

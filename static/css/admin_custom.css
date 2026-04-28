@@ -1,49 +1,110 @@
-:root {
-    --cor-primaria: #1e88e5;
-    --cor-secundaria: #1565c0;
-    --cor-fundo: #f5f6fa;
-}
-
-body {
-    background-color: var(--cor-fundo);
-    font-family: "Inter", sans-serif;
+body,
+button,
+input,
+select,
+textarea {
+  font-family: "Manrope", "Segoe UI", sans-serif !important;
 }
 
 #header {
-    background: linear-gradient(90deg, var(--cor-primaria), var(--cor-secundaria));
-    color: white;
+  box-shadow: 0 10px 24px rgba(15, 37, 63, 0.22);
 }
 
-#branding h1 {
-    color: white !important;
-    font-size: 22px;
-    font-weight: bold;
+.cm-admin-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
 }
 
-a {
-    color: var(--cor-primaria);
+.cm-admin-logo {
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
 }
 
-a:hover {
-    color: var(--cor-secundaria);
+.cm-admin-subtitle {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.75rem;
+  font-weight: 600;
 }
 
-.module caption {
-    background: var(--cor-primaria);
-    color: white;
-    font-weight: bold;
+.cm-admin-backsite {
+  color: #fff;
+  text-decoration: none;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 999px;
+  padding: 0.35rem 0.7rem;
+  font-size: 0.78rem;
+  font-weight: 700;
 }
 
-.submit-row input {
-    background: var(--cor-primaria);
-    color: white;
-    border: none;
-    border-radius: 6px;
-    padding: 8px 15px;
-    cursor: pointer;
-    transition: 0.3s;
+.cm-admin-backsite:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.16);
 }
 
-.submit-row input:hover {
-    background: var(--cor-secundaria);
+.module,
+.inline-group,
+#changelist-filter,
+#content-related {
+  border-radius: 14px;
+  border: 1px solid #d4e0ec;
+  box-shadow: 0 10px 24px rgba(15, 37, 63, 0.08);
+  overflow: hidden;
+}
+
+#changelist table thead th {
+  background: #edf4fa;
+}
+
+.submit-row {
+  border-radius: 0 0 14px 14px;
+}
+
+.submit-row input,
+.submit-row a.deletelink,
+.button,
+input[type="submit"],
+input[type="button"],
+.button.default,
+input[type="submit"].default {
+  border-radius: 999px !important;
+  font-weight: 700;
+}
+
+.login {
+  background:
+    radial-gradient(circle at 20% 10%, rgba(244, 185, 66, 0.2), transparent 32%),
+    linear-gradient(140deg, #0a2c4f, #0f4c81);
+}
+
+.cm-admin-login-brand {
+  text-align: center;
+  margin-bottom: 1.2rem;
+}
+
+.cm-admin-login-brand h1 {
+  margin: 0.6rem 0 0.3rem;
+  color: #fff;
+  font-size: 1.8rem;
+}
+
+.cm-admin-login-brand p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.cm-admin-login-logo {
+  width: 72px;
+  height: 72px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  box-shadow: 0 12px 26px rgba(0, 0, 0, 0.22);
+}
+
+.login #container {
+  border-radius: 16px;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.28);
 }

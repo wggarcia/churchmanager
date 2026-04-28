@@ -10,8 +10,8 @@ urlpatterns = [
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-else:
-    # 🔹 Serve mídia mesmo em produção no Render
+elif settings.SERVE_MEDIA_IN_PROD:
+    # Opcional: habilite apenas se não houver CDN/storage para media.
     from django.views.static import serve
     from django.urls import re_path
 

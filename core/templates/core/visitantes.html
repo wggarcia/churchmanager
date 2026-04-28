@@ -1,31 +1,41 @@
 {% extends "core/base.html" %}
 {% block content %}
-<h3>🙋 Visitantes</h3>
+<section class="hero-card fade-rise">
+  <div class="hero-inner">
+    <span class="eyebrow"><i class="bi bi-person-plus"></i> Integração</span>
+    <h1 class="hero-title">Visitantes</h1>
+    <p class="hero-subtitle">Acompanhamento de visitantes e próximos passos de cuidado.</p>
+  </div>
+</section>
 
-<table class="table table-striped table-bordered table-hover align-middle">
-  <thead class="table-primary text-center">
-    <tr>
-      <th>Nome</th>
-      <th>Data da Visita</th>
-      <th>Frequenta Igreja?</th>
-      <th>Igreja de Origem</th>
-      <th>Telefone</th>
-      <th>Email</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for v in visitantes %}
-    <tr>
-      <td>{{ v.nome }}</td>
-      <td>{{ v.data_visita|date:"d/m/Y" }}</td>
-      <td class="text-center">{{ v.frequenta_igreja|yesno:"Sim,Não" }}</td>
-      <td>{{ v.igreja_origem }}</td>
-      <td>{{ v.telefone }}</td>
-      <td>{{ v.email }}</td>
-    </tr>
-    {% empty %}
-    <tr><td colspan="6" class="text-center text-muted">Nenhum visitante registrado.</td></tr>
-    {% endfor %}
-  </tbody>
-</table>
+<section class="cm-table-wrap mt-4 fade-rise delay-1">
+  <div class="table-responsive">
+    <table class="table table-hover align-middle">
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>Data da Visita</th>
+          <th>Frequenta Igreja?</th>
+          <th>Igreja de Origem</th>
+          <th>Telefone</th>
+          <th>E-mail</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for v in visitantes %}
+        <tr>
+          <td>{{ v.nome }}</td>
+          <td>{{ v.data_visita|date:"d/m/Y" }}</td>
+          <td>{{ v.frequenta_igreja|yesno:"Sim,Não" }}</td>
+          <td>{{ v.igreja_origem|default:"-" }}</td>
+          <td>{{ v.telefone|default:"-" }}</td>
+          <td>{{ v.email|default:"-" }}</td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="6" class="text-center text-muted">Nenhum visitante registrado.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
 {% endblock %}

@@ -1,40 +1,31 @@
 {% extends "core/base.html" %}
 {% block content %}
-<div class="container mt-4 mb-5">
-
-  <!-- Cabeçalho -->
-  <div class="text-center mb-4 p-2 rounded"
-       style="background: rgba(0,0,0,0.5); color: #fff; text-shadow: 1px 1px 5px rgba(0,0,0,0.9);">
-    <h2 class="mb-1">🌍 Missões</h2>
-    <p class="mb-0">Conheça as frentes missionárias apoiadas pela ADSJS</p>
+<section class="hero-card fade-rise">
+  <div class="hero-inner">
+    <span class="eyebrow"><i class="bi bi-globe2"></i> Ministério</span>
+    <h1 class="hero-title">Missões</h1>
+    <p class="hero-subtitle">Frentes missionárias e ações evangelísticas apoiadas pela igreja.</p>
   </div>
+</section>
 
+<section class="section-card mt-4 p-4 fade-rise delay-1">
   {% if missoes %}
-  <div class="row">
+  <div class="card-stack">
     {% for missao in missoes %}
-    <div class="col-md-4 mb-4">
-      <div class="card shadow-sm h-100 border-0" style="background: rgba(255,255,255,0.95); border-radius: 12px;">
-        {% if missao.imagem %}
-        <img src="{{ missao.imagem.url }}" class="card-img-top" alt="{{ missao.nome }}"
-             style="height: 240px; object-fit: cover;">
-        {% endif %}
-        <div class="card-body">
-          <h5 class="card-title fw-bold" style="color: #003366; text-shadow: 1px 1px 3px rgba(255,255,255,0.8);">
-            {{ missao.nome }}
-          </h5>
-          <p class="card-text" style="color: #333; text-shadow: 1px 1px 3px rgba(255,255,255,0.8);">
-            {{ missao.descricao|truncatechars:150 }}
-          </p>
-        </div>
+    <article class="content-card">
+      <div class="content-card-body">
+        <h3 class="content-card-title">{{ missao.nome }}</h3>
+        <p class="content-card-text">{{ missao.descricao|default:"Sem descrição cadastrada."|truncatechars:150 }}</p>
+        <p class="meta-line">
+          {% if missao.pais %}<i class="bi bi-geo-alt"></i> {{ missao.pais }}{% endif %}
+          {% if missao.responsavel %} • Responsável: {{ missao.responsavel }}{% endif %}
+        </p>
       </div>
-    </div>
+    </article>
     {% endfor %}
   </div>
   {% else %}
-  <p class="text-center text-light fs-5" style="text-shadow: 1px 1px 5px rgba(0,0,0,0.8);">
-    Nenhuma missão cadastrada no momento.
-  </p>
+  <div class="cm-empty">Nenhuma missão cadastrada no momento.</div>
   {% endif %}
-
-</div>
+</section>
 {% endblock %}

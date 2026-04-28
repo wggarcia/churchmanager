@@ -1,8 +1,22 @@
 from django.db import models
+from django.core.validators import RegexValidator
 from django.utils import timezone
 
 # -------------------- CONFIGURAÇÃO DO PORTAL --------------------
 class ConfigPortal(models.Model):
+    nome_sistema = models.CharField(
+        "Nome do Sistema",
+        max_length=120,
+        default="ChurchManager Pro",
+        help_text="Nome comercial exibido no painel e no login.",
+    )
+    slogan_sistema = models.CharField(
+        "Slogan do Sistema",
+        max_length=180,
+        blank=True,
+        null=True,
+        default="Gestão inteligente para igrejas",
+    )
     nome_igreja = models.CharField(
         "Nome da Igreja",
         max_length=150,
@@ -20,6 +34,58 @@ class ConfigPortal(models.Model):
         blank=True,
         null=True,
         help_text="Texto exibido na página inicial do portal.",
+    )
+    chave_igreja = models.SlugField(
+        "Chave da Igreja",
+        max_length=80,
+        blank=True,
+        null=True,
+        unique=True,
+        help_text="Identificador único para versões white-label (ex: igreja-central).",
+    )
+    dominio_oficial = models.CharField(
+        "Domínio Oficial",
+        max_length=120,
+        blank=True,
+        null=True,
+        help_text="Ex: adsjs.com.br",
+    )
+    cidade = models.CharField("Cidade", max_length=80, blank=True, null=True)
+    estado = models.CharField("Estado", max_length=40, blank=True, null=True)
+    telefone_contato = models.CharField("Telefone de Contato", max_length=25, blank=True, null=True)
+    email_contato = models.EmailField("E-mail de Contato", blank=True, null=True)
+    instagram_url = models.URLField("Instagram", blank=True, null=True)
+    youtube_url = models.URLField("YouTube", blank=True, null=True)
+    facebook_url = models.URLField("Facebook", blank=True, null=True)
+    recebe_novas_igrejas = models.BooleanField(
+        "Instância comercial (revenda ativa)",
+        default=True,
+        help_text="Marque para sinalizar esta instalação como pronta para vender para outras igrejas.",
+    )
+
+    cor_primaria = models.CharField(
+        "Cor Primária",
+        max_length=7,
+        default="#0f4c81",
+        validators=[RegexValidator(regex=r"^#[0-9A-Fa-f]{6}$", message="Use formato hexadecimal, ex: #0f4c81")],
+    )
+    cor_secundaria = models.CharField(
+        "Cor Secundária",
+        max_length=7,
+        default="#1f7a8c",
+        validators=[RegexValidator(regex=r"^#[0-9A-Fa-f]{6}$", message="Use formato hexadecimal, ex: #1f7a8c")],
+    )
+    cor_destaque = models.CharField(
+        "Cor de Destaque",
+        max_length=7,
+        default="#f4b942",
+        validators=[RegexValidator(regex=r"^#[0-9A-Fa-f]{6}$", message="Use formato hexadecimal, ex: #f4b942")],
+    )
+    cor_fundo = models.CharField(
+        "Cor de Fundo",
+        max_length=7,
+        default="#f4f7fb",
+        validators=[RegexValidator(regex=r"^#[0-9A-Fa-f]{6}$", message="Use formato hexadecimal, ex: #f4f7fb")],
     )
 
     logo = models.ImageField(
@@ -216,6 +282,36 @@ class Missao(models.Model):
 
     def __str__(self):
         return self.nome
+
+
+# -------------------- PEDIDO DE ORAÇÃO --------------------
+class PedidoOracao(models.Model):
+    class Status(models.TextChoices):
+        PENDENTE = "PENDENTE", "Pendente"
+        EM_ACOMPANHAMENTO = "EM_ACOMPANHAMENTO", "Em acompanhamento"
+        CONCLUIDO = "CONCLUIDO", "Concluído"
+
+    nome = models.CharField("Nome", max_length=120, blank=True, null=True)
+    telefone = models.CharField("Telefone", max_length=25, blank=True, null=True)
+    email = models.EmailField("E-mail", blank=True, null=True)
+    pedido = models.TextField("Pedido")
+    confidencial = models.BooleanField("Confidencial", default=True)
+    status = models.CharField(
+        "Status",
+        max_length=20,
+        choices=Status.choices,
+        default=Status.PENDENTE,
+    )
+    criado_em = models.DateTimeField("Criado em", auto_now_add=True)
+    atualizado_em = models.DateTimeField("Atualizado em", auto_now=True)
+
+    class Meta:
+        verbose_name = "Pedido de Oração"
+        verbose_name_plural = "Pedidos de Oração"
+        ordering = ["-criado_em"]
+
+    def __str__(self):
+        return f"Pedido de Oração - {self.nome or 'Anônimo'}"
 
 
 # -------------------- ESCALA DE SERVIÇO --------------------

@@ -1,47 +1,48 @@
 {% extends "core/base.html" %}
 {% block content %}
-<div class="container mt-4">
-  <h2 class="text-center mb-4">🕊️ Escala de Cultos</h2>
-
-  {% if escalas %}
-  {% for escala in escalas %}
-  <div class="card shadow-lg mb-4" style="background: rgba(0, 0, 0, 0.6); color: #fff;">
-    <div class="card-body">
-      <h5 class="card-title text-warning">
-        📅 {{ escala.data|date:"d/m/Y" }} — {{ escala.culto }}
-      </h5>
-
-      {% if escala.local %}
-      <p class="mb-2"><strong>📍 Local:</strong> {{ escala.local }}</p>
-      {% endif %}
-
-      {% if escala.tarefa %}
-      <p><strong>🎯 Tema / Observação:</strong> {{ escala.tarefa }}</p>
-      {% endif %}
-
-      <hr style="border-color: #ffd700; opacity: 0.6;">
-
-      <h6 class="text-warning">👥 Obreiros Escalados:</h6>
-      <ul class="list-unstyled mb-0">
-        {% for escala_obreiro in escala.escalaobreiro_set.all %}
-          <li style="margin-bottom: 6px;">
-            <strong>{{ escala_obreiro.obreiro.nome }}</strong>
-            {% if escala_obreiro.obreiro.cargo %}
-              — {{ escala_obreiro.obreiro.cargo }}
-            {% endif %}
-            {% if escala_obreiro.funcao %}
-              <span style="color: #ffd700;">({{ escala_obreiro.funcao }})</span>
-            {% endif %}
-          </li>
-        {% empty %}
-          <li class="text-muted">Nenhum obreiro escalado ainda.</li>
-        {% endfor %}
-      </ul>
-    </div>
+<section class="hero-card fade-rise">
+  <div class="hero-inner">
+    <span class="eyebrow"><i class="bi bi-people"></i> Escala Ministerial</span>
+    <h1 class="hero-title">Escala de Cultos</h1>
+    <p class="hero-subtitle">Distribuição de obreiros, funções e locais dos cultos.</p>
   </div>
-  {% endfor %}
+</section>
+
+<section class="section-card mt-4 p-4 fade-rise delay-1">
+  {% if escalas %}
+    <div class="soft-grid cols-2">
+      {% for escala in escalas %}
+      <article class="content-card">
+        <div class="content-card-body">
+          <h3 class="content-card-title">{{ escala.culto }}</h3>
+          <p class="meta-line"><i class="bi bi-calendar3"></i> {{ escala.data|date:"d/m/Y" }}</p>
+
+          {% if escala.local %}
+            <p class="content-card-text"><strong>Local:</strong> {{ escala.local }}</p>
+          {% endif %}
+          {% if escala.tarefa %}
+            <p class="content-card-text"><strong>Tema/Tarefa:</strong> {{ escala.tarefa }}</p>
+          {% endif %}
+
+          <hr>
+          <p class="content-card-text mb-2"><strong>Obreiros escalados:</strong></p>
+          <ul class="mb-0 ps-3">
+            {% for escala_obreiro in escala.escalaobreiro_set.all %}
+              <li class="content-card-text">
+                {{ escala_obreiro.obreiro.nome }}
+                {% if escala_obreiro.obreiro.cargo %} — {{ escala_obreiro.obreiro.cargo }}{% endif %}
+                {% if escala_obreiro.funcao %} ({{ escala_obreiro.funcao }}){% endif %}
+              </li>
+            {% empty %}
+              <li class="content-card-text">Nenhum obreiro escalado ainda.</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
   {% else %}
-  <p class="text-center text-muted">Nenhuma escala cadastrada no momento.</p>
+    <div class="cm-empty">Nenhuma escala cadastrada no momento.</div>
   {% endif %}
-</div>
+</section>
 {% endblock %}

@@ -8,3 +8,14 @@ Desktop/
 build/
 dist/
 *.log
+.pytest_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# Artefatos do Django
+media/
+staticfiles/
+
+# Ambientes e segredos
+.env

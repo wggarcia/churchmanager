@@ -1,52 +1,40 @@
 {% extends "core/base.html" %}
 {% block content %}
-<div class="container mt-4 mb-5">
-
-  <!-- Título e Data Atual -->
-  <div class="text-center mb-4 p-2 rounded" 
-       style="background: rgba(0, 0, 0, 0.5); color: #fff; text-shadow: 1px 1px 5px rgba(0,0,0,0.9);">
-    <h2 class="mb-1"> 🗓️ Próximos Eventos</h2>
-    <p class="mb-0">Hoje é {{ hoje|date:"d/m/Y" }}</p>
+<section class="hero-card fade-rise">
+  <div class="hero-inner">
+    <span class="eyebrow"><i class="bi bi-calendar2-week"></i> Agenda Oficial</span>
+    <h1 class="hero-title">Próximos Eventos</h1>
+    <p class="hero-subtitle">Programação atualizada a partir de {{ hoje|date:"d/m/Y" }}.</p>
   </div>
+</section>
 
-  <!-- Lista de eventos -->
+<section class="section-card mt-4 p-4 fade-rise delay-1">
   {% if eventos %}
-  <div class="row">
-    {% for evento in eventos %}
-    <div class="col-md-4 mb-4">
-      <div class="card shadow-sm h-100 border-0" 
-           style="border-radius: 12px; overflow: hidden; background: rgba(255,255,255,0.95);">
-        {% if evento.imagem %}
-        <img src="{{ evento.imagem.url }}" 
-             class="card-img-top" 
-             alt="{{ evento.nome }}" 
-             style="height: 240px; object-fit: cover;">
+    <div class="card-stack">
+      {% for evento in eventos %}
+      <article class="content-card">
+        {% if evento.capa %}
+          <img src="{{ evento.capa.url }}" alt="{{ evento.titulo|default:'Evento' }}">
+        {% elif evento.imagem %}
+          <img src="{{ evento.imagem.url }}" alt="{{ evento.titulo|default:'Evento' }}">
         {% endif %}
-        <div class="card-body">
-          <h5 class="card-title fw-bold" 
-              style="color: #003366; text-shadow: 1px 1px 3px rgba(255,255,255,0.9);">
-              {{ evento.nome }}
-          </h5>
-          <p class="card-text" 
-             style="color: #222; text-shadow: 1px 1px 3px rgba(255,255,255,0.7);">
-             {{ evento.descricao|truncatechars:120 }}
-          </p>
-          <p class="text-muted mb-0 fw-semibold" 
-             style="text-shadow: 1px 1px 2px rgba(255,255,255,0.8);">
+
+        <div class="content-card-body">
+          <h3 class="content-card-title">{{ evento.titulo|default:"Evento" }}</h3>
+          <p class="content-card-text">{{ evento.descricao|default:"Mais detalhes em breve."|truncatechars:130 }}</p>
+          <p class="meta-line">
             <i class="bi bi-calendar-event"></i> {{ evento.data|date:"d/m/Y" }}
+            {% if evento.hora %} • {{ evento.hora|time:"H:i" }}{% endif %}
+            {% if evento.local %} • {{ evento.local }}{% endif %}
           </p>
         </div>
-      </div>
+      </article>
+      {% endfor %}
     </div>
-    {% endfor %}
-  </div>
   {% else %}
-  <div class="text-center mt-5">
-    <p class="fs-5 text-light" style="text-shadow: 1px 1px 5px rgba(0,0,0,0.8);">
-      🎉 Nenhum evento futuro cadastrado no momento.
-    </p>
-  </div>
+    <div class="cm-empty">
+      Nenhum evento futuro cadastrado no momento.
+    </div>
   {% endif %}
-
-</div>
+</section>
 {% endblock %}

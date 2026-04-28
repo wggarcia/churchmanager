@@ -1,27 +1,39 @@
 {% extends "core/base.html" %}
 {% block content %}
-<h3>👥 Membros</h3>
+<section class="hero-card fade-rise">
+  <div class="hero-inner">
+    <span class="eyebrow"><i class="bi bi-people-fill"></i> Gestão de Pessoas</span>
+    <h1 class="hero-title">Membros</h1>
+    <p class="hero-subtitle">Cadastro e acompanhamento da membresia.</p>
+  </div>
+</section>
 
-<table class="table table-striped table-bordered table-hover align-middle">
-  <thead class="table-success text-center">
-    <tr>
-      <th>Nome</th>
-      <th>Telefone</th>
-      <th>Email</th>
-      <th>Batizado</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for m in membros %}
-    <tr>
-      <td>{{ m.nome }}</td>
-      <td>{{ m.telefone }}</td>
-      <td>{{ m.email }}</td>
-      <td class="text-center">{{ m.batizado|yesno:"Sim,Não" }}</td>
-    </tr>
-    {% empty %}
-    <tr><td colspan="4" class="text-center text-muted">Nenhum membro cadastrado.</td></tr>
-    {% endfor %}
-  </tbody>
-</table>
+<section class="cm-table-wrap mt-4 fade-rise delay-1">
+  <div class="table-responsive">
+    <table class="table table-hover align-middle">
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>Telefone</th>
+          <th>E-mail</th>
+          <th>Cargo</th>
+          <th>Batizado</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for m in membros %}
+        <tr>
+          <td>{{ m.nome }}</td>
+          <td>{{ m.telefone|default:"-" }}</td>
+          <td>{{ m.email|default:"-" }}</td>
+          <td>{{ m.cargo|default:"-" }}</td>
+          <td>{{ m.batizado|yesno:"Sim,Não" }}</td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="5" class="text-center text-muted">Nenhum membro cadastrado.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
 {% endblock %}

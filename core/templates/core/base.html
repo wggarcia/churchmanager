@@ -4,201 +4,127 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ADSJS - Assembleia de Deus Só Jesus Salva</title>
+  <title>{{ nome_sistema|default:"ChurchManager Pro" }}{% if config and config.nome_igreja %} • {{ config.nome_igreja }}{% endif %}</title>
 
-  <!-- Bootstrap -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=Merriweather:wght@700&display=swap" rel="stylesheet">
+
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <link rel="stylesheet" href="{% static 'css/style.css' %}">
 
-  <!-- ✅ PWA (Android + iPhone) -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="ADSJS">
-  <link rel="apple-touch-icon" href="{% static 'img/icone-ios.png' %}">
+  <meta name="apple-mobile-web-app-title" content="{{ nome_sistema|default:'ChurchManager Pro' }}">
+  <link rel="apple-touch-icon" href="{% static 'icons/icone-ios.png' %}">
   <link rel="manifest" href="{% static 'manifest.json' %}">
-  <meta name="theme-color" content="#003366">
+  <meta name="theme-color" content="{% if config and config.cor_primaria %}{{ config.cor_primaria }}{% else %}#0f4c81{% endif %}">
 
+  {% if config %}
   <style>
-    body {
-      margin: 0;
-      padding: 0;
-      min-height: 100vh;
-      background-size: cover;
-      background-repeat: no-repeat;
-      background-position: center;
-      transition: background-image 0.5s ease-in-out;
-    }
-
-    .navbar {
-      background-color: rgba(0, 0, 0, 0.7);
-      backdrop-filter: blur(6px);
-    }
-
-    .navbar a.nav-link, .navbar-brand {
-      color: #fff !important;
-      font-weight: 500;
-    }
-
-    .navbar a.nav-link:hover {
-      color: #ffd700 !important;
-    }
-
-    .igreja-logo {
-      max-height: 60px;
-      width: auto;
-      margin-right: 10px;
-    }
-
-    .navbar-brand strong,
-    .navbar-brand small {
-      color: #fff !important;
-      text-shadow: 0 0 5px rgba(0, 0, 0, 0.6);
-      white-space: normal;
-    }
-
-    #bannerCarousel {
-      width: 100%;
-      overflow: hidden;
-      margin-bottom: 2rem;
-    }
-
-    .carousel-item img {
-      width: 100%;
-      height: 400px;
-      object-fit: cover;
-      object-position: center;
-      background-color: #000;
-      transition: opacity .6s ease-in-out;
-    }
-
-    .carousel-caption h4,
-    .carousel-caption p {
-      color: #fff;
-      text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
-    }
-
-    .content-overlay {
-      background: rgba(255, 255, 255, 0.9);
-      border-radius: 10px;
-      padding: 1rem;
-    }
-
-    h2, h3, h4, h5 {
-      color: #fff !important;
-      text-shadow: 0 0 8px rgba(0, 0, 0, 0.9);
-      border-bottom: 2px solid #ffd700;
-      display: inline-block;
-      padding-bottom: 4px;
-      margin-bottom: 1rem;
-    }
-
-    footer {
-      text-align: center;
-      padding: 1rem;
-      background: rgba(0, 0, 0, 0.7);
-      color: white;
-      font-size: 14px;
-    }
-
-    @media (max-width: 768px) {
-      .navbar-brand {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-      .navbar-brand strong,
-      .navbar-brand small {
-        font-size: 14px;
-      }
-      .carousel-item img {
-        height: 250px;
-      }
-      footer {
-        font-size: 12px;
-        padding: 8px;
-      }
+    :root {
+      --cm-primary: {{ config.cor_primaria|default:'#0f4c81' }};
+      --cm-secondary: {{ config.cor_secundaria|default:'#1f7a8c' }};
+      --cm-accent: {{ config.cor_destaque|default:'#f4b942' }};
+      --cm-bg: {{ config.cor_fundo|default:'#f4f7fb' }};
     }
   </style>
+  {% endif %}
 </head>
 
-<body
-  {% if config and config.plano_fundo %}
-    style="background-image: url('{{ config.plano_fundo.url }}');
-           background-repeat: no-repeat;
-           background-position: center;
-           background-size: cover;"
-  {% endif %}
->
+<body {% if config and config.plano_fundo %}style="background-image: linear-gradient(rgba(255,255,255,.88), rgba(255,255,255,.94)), url('{{ config.plano_fundo.url }}'); background-size: cover; background-position: center;"{% endif %}>
+  <div class="site-shell">
+    <header class="cm-navbar navbar navbar-expand-lg navbar-dark">
+      <div class="page-container">
+        <div class="d-flex align-items-center justify-content-between py-2 w-100">
+          <a class="navbar-brand cm-brand" href="{% url 'index' %}">
+            {% if config and config.logo %}
+              <img src="{{ config.logo.url }}" alt="Logo da igreja" class="cm-brand-logo">
+            {% else %}
+              <img src="{% static 'icons/icon-192.png' %}" alt="Logo padrão" class="cm-brand-logo">
+            {% endif %}
+            <span>
+              <strong class="cm-brand-title">{{ config.nome_igreja|default:"Igreja Evangélica" }}</strong>
+              <small class="cm-brand-subtitle d-block">{{ config.pastor|default:"Gestão e Administração" }}</small>
+            </span>
+          </a>
 
-<header class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
-  <div class="container">
-    <a class="navbar-brand d-flex align-items-center" href="{% url 'index' %}">
-      {% if config and config.logo %}
-        <img src="{{ config.logo.url }}" alt="Logo" class="igreja-logo me-2">
-      {% endif %}
-      <div>
-        <strong>{{ config.nome_igreja|default:"Igreja Evangélica" }}</strong><br>
-        <small>{{ config.pastor|default:"Pastor(a)" }}</small>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Abrir navegação">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+        </div>
+
+        <div class="collapse navbar-collapse pb-2" id="navbarNav">
+          <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-1">
+            <li class="nav-item"><a class="nav-link cm-nav-link" href="{% url 'index' %}"><i class="bi bi-house-door"></i> Início</a></li>
+            <li class="nav-item"><a class="nav-link cm-nav-link" href="{% url 'eventos' %}"><i class="bi bi-calendar-event"></i> Eventos</a></li>
+            <li class="nav-item"><a class="nav-link cm-nav-link" href="{% url 'cultos' %}"><i class="bi bi-people"></i> Cultos</a></li>
+            <li class="nav-item"><a class="nav-link cm-nav-link" href="{% url 'missoes' %}"><i class="bi bi-globe-americas"></i> Missões</a></li>
+            <li class="nav-item"><a class="nav-link cm-nav-link" href="{% url 'pedido_oracao' %}"><i class="bi bi-heart"></i> Pedido de Oração</a></li>
+
+            {% if user.is_authenticated %}
+              <li class="nav-item"><a class="nav-link cm-nav-link" href="{% url 'dashboard' %}"><i class="bi bi-speedometer2"></i> Painel</a></li>
+              <li class="nav-item"><a class="nav-link cm-nav-link" href="{% url 'membros' %}"><i class="bi bi-people-fill"></i> Membros</a></li>
+              <li class="nav-item"><a class="nav-link cm-nav-link" href="{% url 'visitantes' %}"><i class="bi bi-person-plus"></i> Visitantes</a></li>
+              <li class="nav-item"><a class="nav-link cm-nav-link" href="{% url 'ministerios' %}"><i class="bi bi-diagram-3"></i> Ministérios</a></li>
+            {% endif %}
+
+            {% if user.is_authenticated and user.is_superuser %}
+              <li class="nav-item"><a class="nav-link cm-nav-link" href="{% url 'financeiro' %}"><i class="bi bi-graph-up-arrow"></i> Financeiro</a></li>
+              <li class="nav-item"><a class="nav-link cm-nav-link" href="{% url 'bloco_notas' %}"><i class="bi bi-journal-text"></i> Anotações</a></li>
+              <li class="nav-item"><a class="nav-link cm-nav-link" href="/admin/"><i class="bi bi-sliders"></i> Admin</a></li>
+            {% endif %}
+
+            {% if user.is_authenticated %}
+              <li class="nav-item"><a class="nav-link cm-nav-link" href="{% url 'logout' %}"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
+            {% else %}
+              <li class="nav-item"><a class="nav-link cm-nav-link" href="{% url 'login' %}"><i class="bi bi-shield-lock"></i> Login</a></li>
+            {% endif %}
+          </ul>
+        </div>
       </div>
-    </a>
+    </header>
 
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-      <ul class="navbar-nav">
-        <li class="nav-item"><a class="nav-link" href="{% url 'index' %}">🏠 Início</a></li>
-        <li class="nav-item"><a class="nav-link" href="{% url 'eventos' %}">🗓️ Eventos</a></li>
-        <li class="nav-item"><a class="nav-link" href="{% url 'cultos' %}">🕊️ Cultos</a></li>
-        <li class="nav-item"><a class="nav-link" href="{% url 'missoes' %}">🌍 Missões</a></li>
-        <li class="nav-item"><a class="nav-link" href="{% url 'financeiro' %}">💰 Financeiro</a></li>
-
-        {% if user.is_authenticated and user.is_superuser %}
-          <!-- 📝 ANOTAÇÕES (ABRE NA MESMA TELA) -->
-          <li class="nav-item">
-            <a class="nav-link text-info fw-semibold" href="{% url 'bloco_notas' %}">
-              📝 Anotações
-            </a>
-          </li>
+    <main class="cm-main">
+      <div class="page-container">
+        {% if messages %}
+          {% for message in messages %}
+            <div class="alert alert-{{ message.tags|default:'info' }}" role="alert">{{ message }}</div>
+          {% endfor %}
         {% endif %}
+        {% block content %}{% endblock %}
+      </div>
+    </main>
 
-        {% if user.is_authenticated and user.is_superuser %}
-          <li class="nav-item">
-            <a class="nav-link text-warning fw-semibold" href="/admin/">⚙️ Admin</a>
-          </li>
-        {% endif %}
+    <footer class="cm-footer">
+      <div class="cm-footer-inner">
+        <p>
+          <strong>{{ config.nome_igreja|default:"Igreja Evangélica" }}</strong>
+          {% if config and config.cidade %} • {{ config.cidade }}{% endif %}
+          {% if config and config.estado %}/{{ config.estado }}{% endif %}
+        </p>
 
-        {% if user.is_authenticated %}
-          <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">🚪 Logout</a></li>
-        {% else %}
-          <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">🔐 Login</a></li>
-        {% endif %}
-      </ul>
-    </div>
-  </div>
-</header>
+        <div class="cm-social">
+          {% if config and config.instagram_url %}
+            <a href="{{ config.instagram_url }}" target="_blank" rel="noopener noreferrer"><i class="bi bi-instagram"></i> Instagram</a>
+          {% endif %}
+          {% if config and config.youtube_url %}
+            <a href="{{ config.youtube_url }}" target="_blank" rel="noopener noreferrer"><i class="bi bi-youtube"></i> YouTube</a>
+          {% endif %}
+          {% if config and config.facebook_url %}
+            <a href="{{ config.facebook_url }}" target="_blank" rel="noopener noreferrer"><i class="bi bi-facebook"></i> Facebook</a>
+          {% endif %}
+        </div>
 
-<main class="container mt-4 mb-5">
-  {% block content %}{% endblock %}
-</main>
-
-<footer>
-  <p>{{ igreja_nome }} — {{ pastor_nome }}<br>
-
-  <div style="margin: 8px 0;">
-    <!-- 🔗 Link externo (Instagram abre em nova aba de propósito) -->
-    <a href="https://www.instagram.com/assdedeuscoelho" target="_blank">
-      <img src="{% static 'img/Instagram.png' %}"
-           alt="Instagram"
-           width="28"
-           style="vertical-align: middle; margin-right: 6px;">
-      <span style="color: #ffd700; font-weight: 500;">Siga-nos no Instagram</span>
-    </a>
+        <small>
+          © {% now "Y" %} {{ nome_sistema|default:"ChurchManager Pro" }}
+          {% if config and config.dominio_oficial %} • {{ config.dominio_oficial }}{% endif %}
+        </small>
+      </div>
+    </footer>
   </div>
 
-  <small>© {{ now|date:"Y" }} Todos os direitos reservados WGdigital software.</small>
-</footer>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

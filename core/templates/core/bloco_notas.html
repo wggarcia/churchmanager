@@ -1,23 +1,29 @@
 {% extends "core/base.html" %}
 
 {% block content %}
-<h2 class="mb-4">📝 Anotações Administrativas</h2>
+<section class="hero-card fade-rise">
+  <div class="hero-inner">
+    <span class="eyebrow"><i class="bi bi-journal-text"></i> Organização Interna</span>
+    <h1 class="hero-title">Anotações Administrativas</h1>
+    <p class="hero-subtitle">Comunicados e lembretes para gestão pastoral e liderança.</p>
+  </div>
+</section>
 
-{% if anotacoes %}
-  {% for anotacao in anotacoes %}
-    <div class="content-overlay mb-4">
-      <h4>{{ anotacao.titulo|default:"Anotação Administrativa" }}</h4>
-
-      <p style="white-space: pre-wrap;">
-        {{ anotacao.texto }}
-      </p>
-
-      <small class="text-muted">
-        Última atualização: {{ anotacao.atualizado_em|date:"d/m/Y H:i" }}
-      </small>
+<section class="section-card mt-4 p-4 fade-rise delay-1">
+  {% if anotacoes %}
+    <div class="soft-grid cols-2">
+      {% for anotacao in anotacoes %}
+      <article class="content-card">
+        <div class="content-card-body">
+          <h3 class="content-card-title">{{ anotacao.titulo|default:"Anotação Administrativa" }}</h3>
+          <p class="content-card-text" style="white-space: pre-wrap;">{{ anotacao.texto }}</p>
+          <p class="meta-line">Atualizado em {{ anotacao.atualizado_em|date:"d/m/Y H:i" }}</p>
+        </div>
+      </article>
+      {% endfor %}
     </div>
-  {% endfor %}
-{% else %}
-  <p>Nenhuma anotação cadastrada.</p>
-{% endif %}
+  {% else %}
+    <div class="cm-empty">Nenhuma anotação cadastrada.</div>
+  {% endif %}
+</section>
 {% endblock %}

@@ -1,38 +1,47 @@
 import os
 from pathlib import Path
+
 import dj_database_url
+from dotenv import load_dotenv
 
 # ==========================
 # CAMINHO BASE
 # ==========================
 BASE_DIR = Path(__file__).resolve().parent.parent
+load_dotenv(BASE_DIR / ".env")
+
+
+def env_bool(name: str, default: bool = False) -> bool:
+    value = os.getenv(name)
+    if value is None:
+        return default
+    return value.strip().lower() in {"1", "true", "t", "yes", "y", "on"}
+
+
+def env_list(name: str, default: list[str] | None = None) -> list[str]:
+    value = os.getenv(name)
+    if not value:
+        return default or []
+    return [item.strip() for item in value.split(",") if item.strip()]
+
 
 # ==========================
 # CONFIGURAÇÕES BÁSICAS
 # ==========================
-SECRET_KEY = os.environ.get(
-    "SECRET_KEY",
-    "django-insecure-substitua-por-uma-chave-segura"
-)
+SECRET_KEY = os.getenv("SECRET_KEY", "django-insecure-substitua-por-uma-chave-segura")
+RENDER_EXTERNAL_HOSTNAME = os.getenv("RENDER_EXTERNAL_HOSTNAME")
 
-# Detecta automaticamente se está em modo Render
-RENDER_EXTERNAL_HOSTNAME = os.environ.get("RENDER_EXTERNAL_HOSTNAME")
+# Mantém comportamento atual, mas permite override por variável de ambiente.
+DEBUG = env_bool("DEBUG", default=not bool(RENDER_EXTERNAL_HOSTNAME))
 
-if RENDER_EXTERNAL_HOSTNAME:
-    # Ambiente de PRODUÇÃO (Render)
-    DEBUG = False
-    ALLOWED_HOSTS = [
-        RENDER_EXTERNAL_HOSTNAME,   # ex: churchmanager-mvo6.onrender.com
-        "adsjs.com.br",
-        "www.adsjs.com.br",
-    ]
-else:
-    # Ambiente LOCAL (desenvolvimento)
-    DEBUG = True
-    ALLOWED_HOSTS = [
-        "localhost",
-        "127.0.0.1",
-    ]
+default_hosts = ["localhost", "127.0.0.1"] if DEBUG else [
+    "adsjs.com.br",
+    "www.adsjs.com.br",
+]
+if RENDER_EXTERNAL_HOSTNAME and RENDER_EXTERNAL_HOSTNAME not in default_hosts:
+    default_hosts.append(RENDER_EXTERNAL_HOSTNAME)
+
+ALLOWED_HOSTS = env_list("ALLOWED_HOSTS", default=default_hosts)
 
 # ==========================
 # APLICATIVOS
@@ -97,7 +106,7 @@ WSGI_APPLICATION = "churchmanager.wsgi.application"
 # ==========================
 # Se DATABASE_URL existir (Render), usa Postgres com SSL.
 # Caso contrário, usa SQLite (desenvolvimento local).
-DATABASE_URL = os.environ.get("DATABASE_URL")
+DATABASE_URL = os.getenv("DATABASE_URL")
 
 if DATABASE_URL:
     DATABASES = {
@@ -142,9 +151,33 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
+SERVE_MEDIA_IN_PROD = env_bool("SERVE_MEDIA_IN_PROD", default=False)
 
 # WhiteNoise para servir estáticos na Render
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
+# Em produção, habilita proteção padrão recomendada pelo Django.
+if not DEBUG:
+    SECURE_SSL_REDIRECT = env_bool("SECURE_SSL_REDIRECT", default=True)
+    SESSION_COOKIE_SECURE = env_bool("SESSION_COOKIE_SECURE", default=True)
+    CSRF_COOKIE_SECURE = env_bool("CSRF_COOKIE_SECURE", default=True)
+    SECURE_HSTS_SECONDS = int(os.getenv("SECURE_HSTS_SECONDS", "31536000"))
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = env_bool("SECURE_HSTS_INCLUDE_SUBDOMAINS", default=True)
+    SECURE_HSTS_PRELOAD = env_bool("SECURE_HSTS_PRELOAD", default=True)
+    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+    SECURE_REFERRER_POLICY = "strict-origin-when-cross-origin"
+    X_FRAME_OPTIONS = "DENY"
+
+    # Mantém flexível para ambiente Render/domínios próprios.
+    csrf_origins = env_list("CSRF_TRUSTED_ORIGINS")
+    if RENDER_EXTERNAL_HOSTNAME:
+        render_origin = f"https://{RENDER_EXTERNAL_HOSTNAME}"
+        if render_origin not in csrf_origins:
+            csrf_origins.append(render_origin)
+    for domain in ("https://adsjs.com.br", "https://www.adsjs.com.br"):
+        if domain not in csrf_origins:
+            csrf_origins.append(domain)
+    CSRF_TRUSTED_ORIGINS = csrf_origins
 
 # ==========================
 # LOGIN / LOGOUT

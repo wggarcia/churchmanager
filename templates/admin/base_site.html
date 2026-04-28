@@ -1,0 +1,16 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+
+{% block branding %}
+<div class="cm-admin-brand">
+  <img src="{% static 'icons/icon-192.png' %}" alt="ChurchManager" class="cm-admin-logo">
+  <div>
+    <h1 id="site-name"><a href="{% url 'admin:index' %}">ChurchManager Pro</a></h1>
+    <p class="cm-admin-subtitle">Plataforma profissional de gestão para igrejas</p>
+  </div>
+</div>
+{% endblock %}
+
+{% block nav-global %}
+<a class="cm-admin-backsite" href="/" target="_blank" rel="noopener noreferrer">Ver site ao vivo</a>
+{% endblock %}

@@ -7,9 +7,12 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         if not ConfigPortal.objects.exists():
             ConfigPortal.objects.create(
+                nome_sistema="ChurchManager Pro",
+                slogan_sistema="Gestão inteligente para igrejas",
                 nome_igreja="Assembleia de Deus Só Jesus Salva",
                 pastor="Pastora Angélica Coutinho dos Santos",
                 mensagem_boas_vindas="Bem-vindo ao portal da Assembleia de Deus Só Jesus Salva!",
+                dominio_oficial="adsjs.com.br",
             )
             self.stdout.write(self.style.SUCCESS("✅ Configuração padrão criada com sucesso!"))
         else:

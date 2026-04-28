@@ -1,0 +1,24 @@
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block extrastyle %}
+{{ block.super }}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/admin_custom.css' %}">
+<style>
+  html[data-theme="light"], :root {
+    --primary: #0f4c81;
+    --secondary: #1f7a8c;
+    --accent: #f4b942;
+    --header-bg: linear-gradient(120deg, #0a2c4f, #0f4c81);
+    --header-link-color: #ffffff;
+    --breadcrumbs-bg: #f2f6fb;
+    --link-fg: #0f4c81;
+    --link-hover-color: #1f7a8c;
+    --button-bg: #0f4c81;
+    --button-hover-bg: #0b3b65;
+  }
+</style>
+{% endblock %}
