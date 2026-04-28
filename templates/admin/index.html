@@ -8,7 +8,7 @@
 
 {% block content %}
 {% church_dashboard_counts as metrics %}
-{% church_financial_series 8 as financial_json %}
+{% church_financial_series 6 as financial_json %}
 
 <div class="cm-admin-dashboard">
   <section class="cm-admin-hero">
@@ -50,7 +50,7 @@
     <article class="cm-panel">
       <h2>Evolução Financeira</h2>
       <p class="cm-muted">Contribuições e despesas dos últimos meses.</p>
-      <canvas id="cm-financial-chart" height="180"></canvas>
+      <canvas id="cm-financial-chart" height="120"></canvas>
     </article>
   </section>
 </div>
@@ -102,9 +102,17 @@
     },
     options: {
       responsive: true,
-      maintainAspectRatio: false,
+      maintainAspectRatio: true,
+      aspectRatio: 2.4,
+      animation: false,
       plugins: {
         legend: { position: 'top' }
+      },
+      elements: {
+        point: {
+          radius: 2,
+          hoverRadius: 3
+        }
       }
     }
   });

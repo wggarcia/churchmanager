@@ -255,7 +255,7 @@ input[type="submit"].default {
 
 #cm-financial-chart {
   width: 100%;
-  min-height: 280px;
+  max-height: 220px;
 }
 
 @media (max-width: 1320px) {
