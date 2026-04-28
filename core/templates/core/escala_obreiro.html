@@ -1,10 +1,10 @@
 {% extends "core/base.html" %}
 {% block content %}
-<section class="hero-card fade-rise">
+<section class="hero-card hero-impact fade-rise">
   <div class="hero-inner">
     <span class="eyebrow"><i class="bi bi-people"></i> Escala Ministerial</span>
-    <h1 class="hero-title">Escala de Cultos</h1>
-    <p class="hero-subtitle">Distribuição de obreiros, funções e locais dos cultos.</p>
+    <h1 class="hero-title display-title">Escala de Cultos</h1>
+    <p class="hero-subtitle hero-lead">Distribuição de obreiros, funções e locais dos cultos.</p>
   </div>
 </section>
 
@@ -12,7 +12,7 @@
   {% if escalas %}
     <div class="soft-grid cols-2">
       {% for escala in escalas %}
-      <article class="content-card">
+      <article class="content-card content-card-lift">
         <div class="content-card-body">
           <h3 class="content-card-title">{{ escala.culto }}</h3>
           <p class="meta-line"><i class="bi bi-calendar3"></i> {{ escala.data|date:"d/m/Y" }}</p>

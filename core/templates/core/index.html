@@ -1,18 +1,64 @@
 {% extends "core/base.html" %}
 {% block content %}
-<section class="hero-card fade-rise">
-  <div class="hero-inner">
-    <span class="eyebrow"><i class="bi bi-stars"></i> Portal Oficial</span>
-    <h1 class="hero-title">{{ config.nome_igreja|default:"Bem-vindo ao Portal da Igreja" }}</h1>
-    <p class="hero-subtitle">
-      {{ config.mensagem_boas_vindas|default:"Uma experiência moderna para comunicação, eventos e administração da igreja." }}
-    </p>
+<section class="hero-card hero-impact fade-rise">
+  <div class="hero-inner hero-grid">
+    <div>
+      <span class="eyebrow"><i class="bi bi-stars"></i> Comunidade • Fé • Gestão</span>
+      <h1 class="hero-title display-title">{{ config.nome_igreja|default:"Portal da Igreja" }}</h1>
+      <p class="hero-subtitle hero-lead">
+        {{ config.mensagem_boas_vindas|default:"Uma experiência digital completa para conectar membros, visitantes e liderança." }}
+      </p>
+
+      <div class="hero-actions mt-4">
+        <a href="{% url 'eventos' %}" class="btn cm-btn"><i class="bi bi-calendar-event"></i> Ver Programação</a>
+        <a href="{% url 'pedido_oracao' %}" class="cm-btn-outline"><i class="bi bi-heart-pulse"></i> Enviar Pedido de Oração</a>
+      </div>
+
+      <div class="impact-grid mt-4">
+        <article class="glass-kpi">
+          <p>Membros</p>
+          <h3>{{ metricas.membros }}</h3>
+        </article>
+        <article class="glass-kpi">
+          <p>Visitantes</p>
+          <h3>{{ metricas.visitantes }}</h3>
+        </article>
+        <article class="glass-kpi">
+          <p>Ministérios</p>
+          <h3>{{ metricas.ministerios }}</h3>
+        </article>
+        <article class="glass-kpi">
+          <p>Escalas</p>
+          <h3>{{ metricas.cultos }}</h3>
+        </article>
+      </div>
+    </div>
+
+    <aside class="hero-orbit">
+      <div class="orb orb-1"></div>
+      <div class="orb orb-2"></div>
+      <div class="orb-card">
+        <h3>Próximos Compromissos</h3>
+        {% if proximos_eventos %}
+          <ul class="timeline-list">
+            {% for evento in proximos_eventos %}
+              <li>
+                <strong>{{ evento.titulo|default:"Evento" }}</strong>
+                <small>{{ evento.data|date:"d/m/Y" }}{% if evento.local %} • {{ evento.local }}{% endif %}</small>
+              </li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p class="content-card-text mb-0">Sem eventos futuros cadastrados no momento.</p>
+        {% endif %}
+      </div>
+    </aside>
   </div>
 </section>
 
 {% if banners %}
 <section class="mt-4 fade-rise delay-1">
-  <div id="bannerCarousel" class="carousel slide carousel-wrap" data-bs-ride="carousel">
+  <div id="bannerCarousel" class="carousel slide carousel-wrap halo" data-bs-ride="carousel">
     <div class="carousel-inner">
       {% for banner in banners %}
       <div class="carousel-item {% if forloop.first %}active{% endif %}">
@@ -38,13 +84,34 @@
 </section>
 {% endif %}
 
-<section class="section-card mt-4 p-4 fade-rise delay-2">
-  <h2 class="section-title"><i class="bi bi-calendar-heart"></i> Últimos Eventos</h2>
+<section class="feature-band mt-4 fade-rise delay-2">
+  <article>
+    <i class="bi bi-people-fill"></i>
+    <h3>Comunhão</h3>
+    <p>Integração de membros e visitantes com histórico centralizado.</p>
+  </article>
+  <article>
+    <i class="bi bi-megaphone"></i>
+    <h3>Comunicação</h3>
+    <p>Agenda, avisos e campanhas com visual claro e profissional.</p>
+  </article>
+  <article>
+    <i class="bi bi-shield-check"></i>
+    <h3>Confiança</h3>
+    <p>Processos organizados para liderança, administração e equipe.</p>
+  </article>
+</section>
+
+<section class="section-card mt-4 p-4 fade-rise delay-3">
+  <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+    <h2 class="section-title mb-0"><i class="bi bi-calendar-heart"></i> Últimos Eventos</h2>
+    <a href="{% url 'eventos' %}" class="cm-btn-outline">Abrir agenda completa</a>
+  </div>
 
   {% if eventos %}
   <div class="card-stack">
     {% for evento in eventos %}
-    <article class="content-card">
+    <article class="content-card content-card-lift">
       {% if evento.capa %}
         <img src="{{ evento.capa.url }}" alt="{{ evento.titulo|default:'Evento' }}">
       {% elif evento.imagem %}

@@ -1,10 +1,10 @@
 {% extends "core/base.html" %}
 {% block content %}
-<section class="hero-card fade-rise">
+<section class="hero-card hero-impact fade-rise">
   <div class="hero-inner">
     <span class="eyebrow"><i class="bi bi-calendar2-week"></i> Agenda Oficial</span>
-    <h1 class="hero-title">Próximos Eventos</h1>
-    <p class="hero-subtitle">Programação atualizada a partir de {{ hoje|date:"d/m/Y" }}.</p>
+    <h1 class="hero-title display-title">Eventos da Igreja</h1>
+    <p class="hero-subtitle hero-lead">Programação atualizada a partir de {{ hoje|date:"d/m/Y" }}.</p>
   </div>
 </section>
 
@@ -12,7 +12,7 @@
   {% if eventos %}
     <div class="card-stack">
       {% for evento in eventos %}
-      <article class="content-card">
+      <article class="content-card content-card-lift">
         {% if evento.capa %}
           <img src="{{ evento.capa.url }}" alt="{{ evento.titulo|default:'Evento' }}">
         {% elif evento.imagem %}
@@ -32,9 +32,7 @@
       {% endfor %}
     </div>
   {% else %}
-    <div class="cm-empty">
-      Nenhum evento futuro cadastrado no momento.
-    </div>
+    <div class="cm-empty">Nenhum evento futuro cadastrado no momento.</div>
   {% endif %}
 </section>
 {% endblock %}

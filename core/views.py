@@ -14,9 +14,25 @@ from .models import (
 # -------------------- PÁGINAS PÚBLICAS --------------------
 def index(request):
     """Página inicial do site"""
+    hoje = date.today()
     eventos = Evento.objects.order_by("-data")[:12]
+    proximos_eventos = Evento.objects.filter(data__gte=hoje).order_by("data")[:3]
     banners = Banner.objects.filter(ativo=True).order_by("ordem")
-    return render(request, "core/index.html", {"eventos": eventos, "banners": banners})
+    return render(
+        request,
+        "core/index.html",
+        {
+            "eventos": eventos,
+            "banners": banners,
+            "proximos_eventos": proximos_eventos,
+            "metricas": {
+                "membros": Membro.objects.count(),
+                "visitantes": Visitante.objects.count(),
+                "ministerios": Ministerio.objects.count(),
+                "cultos": EscalaServico.objects.count(),
+            },
+        },
+    )
 
 
 def eventos(request):

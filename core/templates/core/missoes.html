@@ -1,10 +1,10 @@
 {% extends "core/base.html" %}
 {% block content %}
-<section class="hero-card fade-rise">
+<section class="hero-card hero-impact fade-rise">
   <div class="hero-inner">
     <span class="eyebrow"><i class="bi bi-globe2"></i> Ministério</span>
-    <h1 class="hero-title">Missões</h1>
-    <p class="hero-subtitle">Frentes missionárias e ações evangelísticas apoiadas pela igreja.</p>
+    <h1 class="hero-title display-title">Missões</h1>
+    <p class="hero-subtitle hero-lead">Frentes missionárias e ações evangelísticas apoiadas pela igreja.</p>
   </div>
 </section>
 
@@ -12,7 +12,7 @@
   {% if missoes %}
   <div class="card-stack">
     {% for missao in missoes %}
-    <article class="content-card">
+    <article class="content-card content-card-lift">
       <div class="content-card-body">
         <h3 class="content-card-title">{{ missao.nome }}</h3>
         <p class="content-card-text">{{ missao.descricao|default:"Sem descrição cadastrada."|truncatechars:150 }}</p>
