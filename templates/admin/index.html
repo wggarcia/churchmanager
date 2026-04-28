@@ -1,0 +1,113 @@
+{% extends "admin/index.html" %}
+{% load i18n static admin_metrics %}
+
+{% block extrastyle %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'css/admin_custom.css' %}">
+{% endblock %}
+
+{% block content %}
+{% church_dashboard_counts as metrics %}
+{% church_financial_series 8 as financial_json %}
+
+<div class="cm-admin-dashboard">
+  <section class="cm-admin-hero">
+    <div>
+      <p class="cm-admin-eyebrow">Painel Executivo</p>
+      <h1>Gestão Inteligente da Igreja</h1>
+      <p class="cm-admin-hero-sub">
+        Acompanhe ministérios, pessoas, eventos e finanças com visão consolidada e tomada de decisão rápida.
+      </p>
+      <div class="cm-admin-hero-actions">
+        <a href="/" target="_blank" rel="noopener noreferrer" class="button">Abrir site público</a>
+        <a href="{% url 'admin:core_configportal_changelist' %}" class="button">Configurar marca white-label</a>
+      </div>
+    </div>
+    <div class="cm-admin-live">
+      <span>Agora</span>
+      <strong id="cm-admin-clock">--:--</strong>
+      <small id="cm-admin-date">--</small>
+    </div>
+  </section>
+
+  <section class="cm-admin-kpis">
+    <article class="cm-kpi-card"><p>Membros</p><h3>{{ metrics.membros }}</h3></article>
+    <article class="cm-kpi-card"><p>Visitantes</p><h3>{{ metrics.visitantes }}</h3></article>
+    <article class="cm-kpi-card"><p>Ministérios</p><h3>{{ metrics.ministerios }}</h3></article>
+    <article class="cm-kpi-card"><p>Eventos</p><h3>{{ metrics.eventos }}</h3></article>
+    <article class="cm-kpi-card"><p>Cultos/escala</p><h3>{{ metrics.cultos }}</h3></article>
+    <article class="cm-kpi-card"><p>Pedidos de oração</p><h3>{{ metrics.oracoes_total }}</h3></article>
+    <article class="cm-kpi-card highlight"><p>Orações pendentes</p><h3>{{ metrics.oracoes_pendentes }}</h3></article>
+  </section>
+
+  <section class="cm-admin-grid">
+    <article class="cm-panel">
+      <h2>Apps e Módulos</h2>
+      <p class="cm-muted">Acesso rápido a todos os módulos administrativos.</p>
+      {% include "admin/app_list.html" with app_list=app_list show_changelinks=True %}
+    </article>
+
+    <article class="cm-panel">
+      <h2>Evolução Financeira</h2>
+      <p class="cm-muted">Contribuições e despesas dos últimos meses.</p>
+      <canvas id="cm-financial-chart" height="180"></canvas>
+    </article>
+  </section>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script>
+(function () {
+  const now = new Date();
+  const clock = document.getElementById('cm-admin-clock');
+  const dateEl = document.getElementById('cm-admin-date');
+  if (clock && dateEl) {
+    const renderNow = () => {
+      const d = new Date();
+      clock.textContent = d.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+      dateEl.textContent = d.toLocaleDateString('pt-BR', { weekday: 'long', day: '2-digit', month: 'long' });
+    };
+    renderNow();
+    setInterval(renderNow, 30000);
+  }
+
+  const payload = {{ financial_json|safe }};
+  const canvas = document.getElementById('cm-financial-chart');
+  if (!canvas || !payload || !payload.labels) return;
+
+  new Chart(canvas.getContext('2d'), {
+    type: 'line',
+    data: {
+      labels: payload.labels,
+      datasets: [
+        {
+          label: 'Contribuições',
+          data: payload.contrib,
+          borderColor: '#1f7a8c',
+          backgroundColor: 'rgba(31,122,140,0.15)',
+          fill: true,
+          tension: 0.35,
+          borderWidth: 2
+        },
+        {
+          label: 'Despesas',
+          data: payload.despesas,
+          borderColor: '#c73e3e',
+          backgroundColor: 'rgba(199,62,62,0.10)',
+          fill: true,
+          tension: 0.35,
+          borderWidth: 2
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { position: 'top' }
+      }
+    }
+  });
+})();
+</script>
+{% endblock %}
