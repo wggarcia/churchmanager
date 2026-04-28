@@ -53,6 +53,13 @@ class ConfigPortal(models.Model):
     cidade = models.CharField("Cidade", max_length=80, blank=True, null=True)
     estado = models.CharField("Estado", max_length=40, blank=True, null=True)
     telefone_contato = models.CharField("Telefone de Contato", max_length=25, blank=True, null=True)
+    whatsapp_pedidos_oracao = models.CharField(
+        "WhatsApp para Pedidos de Oração",
+        max_length=25,
+        blank=True,
+        null=True,
+        help_text="Número com DDI. Ex: 5521999999999",
+    )
     email_contato = models.EmailField("E-mail de Contato", blank=True, null=True)
     instagram_url = models.URLField("Instagram", blank=True, null=True)
     youtube_url = models.URLField("YouTube", blank=True, null=True)

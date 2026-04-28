@@ -1,5 +1,7 @@
 from datetime import date
 from calendar import monthrange
+import re
+from urllib.parse import quote
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, user_passes_test
@@ -7,7 +9,7 @@ from django.db.models import Sum
 from .models import AnotacaoAdmin
 
 from .models import (
-    Membro, Evento, Contribuicao, Despesa,
+    ConfigPortal, Membro, Evento, Contribuicao, Despesa,
     Visitante, Ministerio, EscalaServico, Missao, Banner, PedidoOracao
 )
 
@@ -117,6 +119,9 @@ def missoes(request):
 
 def pedido_oracao(request):
     """Recebe pedidos de oração públicos."""
+    config = ConfigPortal.objects.first()
+    whatsapp_destino = getattr(config, "whatsapp_pedidos_oracao", None) or getattr(config, "telefone_contato", None)
+    whatsapp_digits = re.sub(r"\D", "", whatsapp_destino or "")
     sucesso = False
     if request.method == "POST":
         nome = (request.POST.get("nome") or "").strip() or None
@@ -134,8 +139,27 @@ def pedido_oracao(request):
                 confidencial=confidencial,
             )
             sucesso = True
+            if whatsapp_digits:
+                texto = (
+                    "Novo pedido de oração recebido pelo site:\n"
+                    f"Nome: {nome or 'Não informado'}\n"
+                    f"Telefone: {telefone or 'Não informado'}\n"
+                    f"E-mail: {email or 'Não informado'}\n"
+                    f"Confidencial: {'Sim' if confidencial else 'Não'}\n"
+                    f"Pedido: {pedido}"
+                )
+                whatsapp_url = f"https://wa.me/{whatsapp_digits}?text={quote(texto)}"
+                return redirect(whatsapp_url)
 
-    return render(request, "core/pedido_oracao.html", {"sucesso": sucesso})
+    return render(
+        request,
+        "core/pedido_oracao.html",
+        {
+            "sucesso": sucesso,
+            "whatsapp_ativo": bool(whatsapp_digits),
+            "whatsapp_numero": whatsapp_digits,
+        },
+    )
 
 
 # -------------------- FINANCEIRO (APENAS SUPERUSER) --------------------

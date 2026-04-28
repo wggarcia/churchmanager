@@ -12,6 +12,11 @@
   {% if sucesso %}
     <div class="alert alert-success">Seu pedido foi enviado com sucesso. Deus abençoe sua vida.</div>
   {% endif %}
+  {% if whatsapp_ativo %}
+    <div class="alert alert-info">
+      Após enviar, você será direcionado ao WhatsApp pastoral: <strong>{{ whatsapp_numero }}</strong>.
+    </div>
+  {% endif %}
 
   <div class="soft-grid cols-2">
     <div class="form-card">

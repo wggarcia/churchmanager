@@ -4,7 +4,7 @@ from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
 
-from core.models import AnotacaoAdmin, Evento, PedidoOracao
+from core.models import AnotacaoAdmin, ConfigPortal, Evento, PedidoOracao
 
 
 class PublicPagesTests(TestCase):
@@ -44,6 +44,24 @@ class PublicPagesTests(TestCase):
         self.assertEqual(PedidoOracao.objects.count(), 1)
         pedido = PedidoOracao.objects.first()
         self.assertEqual(pedido.status, PedidoOracao.Status.PENDENTE)
+
+    def test_pedido_oracao_redirects_to_whatsapp_when_number_is_configured(self):
+        ConfigPortal.objects.create(
+            nome_igreja="Igreja Teste",
+            whatsapp_pedidos_oracao="+55 (21) 98888-7777",
+        )
+        response = self.client.post(
+            reverse("pedido_oracao"),
+            {
+                "nome": "João",
+                "telefone": "21911112222",
+                "email": "joao@example.com",
+                "pedido": "Preciso de oração por saúde.",
+            },
+        )
+        self.assertEqual(response.status_code, 302)
+        self.assertTrue(response.url.startswith("https://wa.me/5521988887777?text="))
+        self.assertEqual(PedidoOracao.objects.count(), 1)
 
 
 class AuthAndPermissionsTests(TestCase):

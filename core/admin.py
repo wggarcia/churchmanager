@@ -48,6 +48,7 @@ class ConfigPortalAdmin(admin.ModelAdmin):
                 "cidade",
                 "estado",
                 "telefone_contato",
+                "whatsapp_pedidos_oracao",
                 "email_contato",
             ),
             "description": "Configurações gerais do portal."
