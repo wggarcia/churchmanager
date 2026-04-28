@@ -14,6 +14,7 @@
         <a href="{% url 'pedido_oracao' %}" class="cm-btn-outline"><i class="bi bi-heart-pulse"></i> Enviar Pedido de Oração</a>
       </div>
 
+      {% if request.user.is_authenticated %}
       <div class="impact-grid mt-4">
         <article class="glass-kpi">
           <p>Membros</p>
@@ -32,6 +33,7 @@
           <h3>{{ metricas.cultos }}</h3>
         </article>
       </div>
+      {% endif %}
     </div>
 
     <aside class="hero-orbit">
@@ -54,6 +56,25 @@
       </div>
     </aside>
   </div>
+</section>
+
+<section class="section-card mt-4 p-4 fade-rise delay-1">
+  <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+    <h2 class="section-title mb-0"><i class="bi bi-clock-history"></i> Dias de Culto</h2>
+  </div>
+  {% if dias_culto %}
+    <div class="card-stack">
+      {% for item in dias_culto %}
+      <article class="content-card content-card-lift">
+        <div class="content-card-body">
+          <h3 class="content-card-title mb-0">{{ item }}</h3>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="cm-empty">Ainda não há dias de culto cadastrados no momento.</div>
+  {% endif %}
 </section>
 
 {% if banners %}

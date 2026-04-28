@@ -20,6 +20,27 @@ def index(request):
     eventos = Evento.objects.order_by("-data")[:12]
     proximos_eventos = Evento.objects.filter(data__gte=hoje).order_by("data")[:3]
     banners = Banner.objects.filter(ativo=True).order_by("ordem")
+    config = ConfigPortal.objects.first()
+
+    agenda_texto = getattr(config, "agenda_cultos", "") or ""
+    dias_culto = [linha.strip() for linha in agenda_texto.splitlines() if linha.strip()]
+
+    if not dias_culto:
+        dias_semana_pt = {
+            0: "Segunda-feira",
+            1: "Terça-feira",
+            2: "Quarta-feira",
+            3: "Quinta-feira",
+            4: "Sexta-feira",
+            5: "Sábado",
+            6: "Domingo",
+        }
+        proximas_escalas = EscalaServico.objects.filter(data__gte=hoje).order_by("data")[:5]
+        dias_culto = [
+            f"{dias_semana_pt.get(escala.data.weekday(), 'Dia')} • {escala.data.strftime('%d/%m')} • {escala.culto}"
+            for escala in proximas_escalas
+        ]
+
     return render(
         request,
         "core/index.html",
@@ -27,6 +48,7 @@ def index(request):
             "eventos": eventos,
             "banners": banners,
             "proximos_eventos": proximos_eventos,
+            "dias_culto": dias_culto,
             "metricas": {
                 "membros": Membro.objects.count(),
                 "visitantes": Visitante.objects.count(),

@@ -3,7 +3,7 @@ services:
     name: churchmanager
     env: python
     buildCommand: "pip install -r requirements.txt"
-    startCommand: "gunicorn churchmanager.wsgi:application"
+    startCommand: "python manage.py migrate && gunicorn churchmanager.wsgi:application"
     envVars:
       - key: DJANGO_SETTINGS_MODULE
         value: churchmanager.settings

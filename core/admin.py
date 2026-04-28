@@ -45,6 +45,7 @@ class ConfigPortalAdmin(admin.ModelAdmin):
                 "nome_igreja",
                 "pastor",
                 "mensagem_boas_vindas",
+                "agenda_cultos",
                 "cidade",
                 "estado",
                 "telefone_contato",

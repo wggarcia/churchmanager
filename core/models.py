@@ -35,6 +35,17 @@ class ConfigPortal(models.Model):
         null=True,
         help_text="Texto exibido na página inicial do portal.",
     )
+    agenda_cultos = models.TextField(
+        "Dias e horários de culto",
+        blank=True,
+        null=True,
+        help_text=(
+            "Informe uma linha por culto. Exemplo:\n"
+            "Quarta-feira • 19:30 • Culto de Ensino\n"
+            "Domingo • 09:00 • Escola Bíblica\n"
+            "Domingo • 18:00 • Culto da Família"
+        ),
+    )
     chave_igreja = models.SlugField(
         "Chave da Igreja",
         max_length=80,
